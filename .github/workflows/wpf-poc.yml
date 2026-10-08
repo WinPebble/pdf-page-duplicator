@@ -1,0 +1,38 @@
+name: PDF Page Duplicator WPF Preview
+
+on:
+  push:
+    branches: [main, feature/**]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-ui:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+      - name: Build WPF GUI
+        run: dotnet build src/ui/PDFPageDuplicator.UI.csproj -c Release
+      - name: Publish PDF engine
+        run: dotnet publish src/PdfPageDuplicator.Poc.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o dist/engine
+      - name: Publish WPF GUI
+        run: dotnet publish src/ui/PDFPageDuplicator.UI.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o dist/ui
+      - name: Assemble engine alongside WPF
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path dist/ui/Engine -Force | Out-Null
+          Copy-Item -Path dist/engine/* -Destination dist/ui/Engine/ -Recurse -Force
+          if (-not (Test-Path dist/ui/WinPebble.PDFPageDuplicator.exe)) { throw 'Missing UI executable' }
+          if (-not (Test-Path dist/ui/Engine/WinPebble.PDFPageDuplicator.POC.exe)) { throw 'Missing PDF engine' }
+      - name: Upload WPF development preview (NOT a release)
+        uses: actions/upload-artifact@v7
+        with:
+          name: PDF-Page-Duplicator-WPF-Preview-win-x64
+          path: dist/ui/
