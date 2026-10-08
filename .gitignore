@@ -3,3 +3,7 @@ obj/
 dist/
 .vs/
 *.user
+
+# Brand derivatives are generated reproducibly from approved source icon
+packaging/Assets/
+src/ui/Resources/WinPebble.PDFPageDuplicator.ico

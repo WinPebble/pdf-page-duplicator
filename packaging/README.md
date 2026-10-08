@@ -5,8 +5,9 @@ its separate PDFsharp engine. It is **not** a trusted installer or Store submiss
 Do not install this test artifact on a Smart App Control-protected computer, and do
 not disable Windows security for testing.
 
-The MSIX uses placeholder technical icon images generated during CI, not the
-final WinPebble product artwork. No certificate is generated or added to trust stores.
+Official icon tiles and the executable ICO are generated from the approved,
+SHA-256-verified WinPebble pebble mark. No developer certificate is generated,
+trusted or distributed by CI.
 
 To test on the user's protected Windows 11 PC, reserve the **separate** Microsoft
 Store product "WinPebble PDF Page Duplicator" in Partner Center; supply the exact

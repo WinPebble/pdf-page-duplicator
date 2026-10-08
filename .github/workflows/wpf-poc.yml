@@ -18,6 +18,9 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.0.x'
+      - name: Prepare approved WinPebble brand icons
+        shell: pwsh
+        run: .\packaging\Prepare-BrandAssets.ps1
       - name: Build WPF GUI
         run: dotnet build src/ui/PDFPageDuplicator.UI.csproj -c Release
       - name: Publish PDF engine

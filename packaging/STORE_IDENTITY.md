@@ -20,7 +20,8 @@ This literal value must not be 'corrected' to the public product display name.
 - [x] Separate Store manifest and automatic identity validation.
 - [x] PDFsharp core automated tests and WPF Windows builds.
 - [x] Unsigned MSIX **structural** package checks.
-- [ ] Brand-approved application tile icons and screenshots (not temporary CI graphics).
+- [x] Official WinPebble-derived application icons.
+- [ ] Real WPF app screenshots on Windows.
 - [ ] Final Store submission package built from approved assets.
 - [ ] Private audience selected with a designated **personal Microsoft account**.
 - [ ] Store certification and private publishing.

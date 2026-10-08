@@ -63,5 +63,5 @@ $hash=(Get-FileHash $msix -Algorithm SHA256).Hash.ToLowerInvariant()
 "SHA256 ($([IO.Path]::GetFileName($msix))) = $hash" | Set-Content (Join-Path $out 'SHA256SUMS.txt') -Encoding ASCII
 Copy-Item $storeManifest (Join-Path $out 'AppxManifest.Store.xml') -Force
 Write-Host 'PASS: Store identity + unsigned MSIX package STRUCTURE.'
-Write-Host 'BLOCKER: This build still uses placeholder icons. DO NOT submit or sideload.'
+Write-Host 'Icons now derive from approved WinPebble logo. Still DO NOT submit: human WPF review, screenshots and audience setup pending.'
 Write-Host "Product Store ID: 9N28GX9HTL9Z"
