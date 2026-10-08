@@ -1,0 +1,29 @@
+name: PDF Page Duplicator Store MSIX Candidate
+
+on:
+  push:
+    branches: [feature/wpf-options-ui]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  store-package-candidate:
+    runs-on: windows-2025
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+      - name: Verify Partner Center identity and build unsigned Store candidate
+        shell: pwsh
+        run: .\packaging\Build-MSIX-Store-Candidate.ps1
+      - name: Upload structural check package - NOT for submission
+        uses: actions/upload-artifact@v7
+        with:
+          name: PDF-Page-Duplicator-Store-Candidate-NOT-SUBMITTABLE
+          path: artifacts/msix-store-candidate/out/
+          if-no-files-found: error
