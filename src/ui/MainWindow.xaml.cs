@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Path = System.IO.Path;
 using Microsoft.Win32;
 using PdfSharp.Pdf.IO;
 using WinPebble.PdfPageDuplicator;
