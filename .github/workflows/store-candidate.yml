@@ -18,6 +18,9 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.0.x'
+      - name: Confirm exact Partner Center identity
+        shell: pwsh
+        run: .\\packaging\\Validate-StoreIdentity.ps1
       - name: Verify Partner Center identity and build unsigned Store candidate
         shell: pwsh
         run: .\packaging\Build-MSIX-Store-Candidate.ps1

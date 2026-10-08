@@ -4,9 +4,9 @@
          xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
          xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
          IgnorableNamespaces="uap uap10 rescap">
-  <!-- Microsoft Partner Center product: WinPebble PDF Page Duplicator.
-       Store ID 9N28GX9HTL9Z. Package Name transcribed from Partner Center screenshot.
-       Confirm using the Copy icon in Product identity before any upload/submission. -->
+  <!-- Official product identity confirmed by Partner Center Copy button 2026-10-08.
+       The final Package Name suffix Duplicat is intentional.
+       Store ID: 9N28GX9HTL9Z. This is still an unsigned technical candidate. -->
   <Identity Name="TrungHieuNguyen-WinPebble.WinPebblePDFPageDuplicat"
             Publisher="CN=6BD09250-A4F3-4F78-9DA7-2D9751735950"
             Version="1.0.0.0"
