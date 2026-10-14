@@ -1,9 +1,16 @@
 # Current Store submission copy and review gates
 
-Prepared 2026-10-14 for owner review. These are proposed replacements for the
-older Partner Center draft; they have NOT been saved to the portal, submitted
-for certification or published. Keep Private audience and manual publishing
-hold. Store product: 9N28GX9HTL9Z. PR #2 stays unmerged.
+Prepared 2026-10-14. Owner authorized the specified package, four screenshots
+and copy update to Submission 1. Listing copy/features/four captioned Desktop
+screenshots were saved; Store listings is now Complete. Updated certification
+testing notes were saved and verified by reopening. Private audience and manual
+publishing hold remain unchanged. No certification/publication or PR merge.
+
+The approved 1.0.0.0 MSIX upload was rejected for a duplicate package full name
+with different contents. The failed upload was deleted and pending removal of
+the old package was reverted. The old package remains in the draft. A version
+1.0.1.0 candidate is prepared locally; it has NOT been uploaded or authorized
+for upload yet. See [draft update record](STORE_DRAFT_UPDATE.md).
 
 ## Candidate and security
 
