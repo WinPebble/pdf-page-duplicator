@@ -19,7 +19,7 @@ $expected = @{
   'Name' = $requiredName
   'Publisher' = $requiredPublisher
   'ProcessorArchitecture' = 'x64'
-  'Version' = '1.0.0.0'
+  'Version' = '1.0.1.0'
 }
 foreach ($field in $expected.Keys) {
   if ([string]$id.GetAttribute($field) -cne [string]$expected[$field]) {
