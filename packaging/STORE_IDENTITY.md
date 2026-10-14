@@ -21,18 +21,19 @@ This literal value must not be 'corrected' to the public product display name.
 - [x] PDFsharp core automated tests and WPF Windows builds.
 - [x] Unsigned MSIX **structural** package checks.
 - [x] Official WinPebble-derived application icons.
-- [ ] Real WPF app screenshots on Windows.
+- [x] Four real WPF screenshots prepared locally; owner/portal review pending.
 - [ ] Installed MSIX activation and WPF-to-engine execution verified in an approved test environment.
 - [ ] Final Store submission package built from approved assets.
 - [x] Private audience saved, automatic public date unchecked, organizational licensing disabled (portal verified 2026-10-14).
 - [ ] Tester group selected with a designated **personal Microsoft account**.
 - [ ] Store certification and private publishing.
 - [ ] Real Windows 11 test through Microsoft Store: WPF launch, 2-up/4-up output, install/uninstall.
-- [ ] Modern Explorer context menu integration (subsequent milestone).
+- [x] Native Explorer context menu implemented and development-tested on Windows 10/11.
 
 Native `Page Duplicator` implementation and full-MSIX registration are now in
-development; automated selection/argument tests are part of packaging. Real
-Explorer activation and install/uninstall review remain pending; see
+development; automated selection/argument tests are part of packaging. Owner
+confirmed development activation/export on both systems and removal on Windows
+10. The security-patched candidate and Store delivery need final checks; see
 [Explorer preview](../docs/EXPLORER_PREVIEW.md). The portal's uploaded package
 has not been replaced by this development revision.
 

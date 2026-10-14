@@ -3,6 +3,10 @@
 Prepared 2026-10-14. Draft for owner review; no submission or publishing authorization.
 Product: WinPebble PDF Page Duplicator. Store ID: **9N28GX9HTL9Z**.
 
+For the current security-patched candidate and proposed replacement listing,
+use [Store submission review](STORE_SUBMISSION_READY.md). Historical portal
+observations and old copy below remain a record of the uploaded older draft.
+
 Later development update (2026-10-14): the owner confirmed Windows 11
 development UI, Explorer menu activation and export work. The public release
 must also support Windows 10 22H2 x64; manifests now allow build 19045, but
