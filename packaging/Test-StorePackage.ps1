@@ -49,6 +49,7 @@ $report = [ordered]@{
   publisher = [string]$manifest.Package.Identity.Publisher
   version = [string]$manifest.Package.Identity.Version
   architecture = [string]$manifest.Package.Identity.ProcessorArchitecture
+  minimumWindowsVersion = [string]$manifest.Package.Dependencies.TargetDeviceFamily.MinVersion
   structuralCheck = 'PASS'
   installedRuntime = 'NOT TESTED'
   smartAppControl = 'NOT TESTED'

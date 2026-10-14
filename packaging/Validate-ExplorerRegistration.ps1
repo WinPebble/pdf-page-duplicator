@@ -8,6 +8,13 @@ $ns.AddNamespace('f','http://schemas.microsoft.com/appx/manifest/foundation/wind
 $ns.AddNamespace('c','http://schemas.microsoft.com/appx/manifest/com/windows10')
 $ns.AddNamespace('d4','http://schemas.microsoft.com/appx/manifest/desktop/windows10/4')
 $ns.AddNamespace('d5','http://schemas.microsoft.com/appx/manifest/desktop/windows10/5')
+$targets = @($xml.SelectNodes('/f:Package/f:Dependencies/f:TargetDeviceFamily',$ns))
+if ($targets.Count -ne 1 -or $targets[0].Name -cne 'Windows.Desktop' -or
+    $targets[0].MinVersion -cne '10.0.19045.0' -or
+    [version]$targets[0].MaxVersionTested -lt [version]$targets[0].MinVersion -or
+    $xml.Package.Identity.ProcessorArchitecture -cne 'x64') {
+  throw 'Package must target Windows 10 22H2 (19045) or newer, x64. Do not regress to a Windows 11-only minimum.'
+}
 $classes = @($xml.SelectNodes('//c:SurrogateServer/c:Class',$ns))
 $types = @($xml.SelectNodes('//d4:FileExplorerContextMenus/d5:ItemType',$ns))
 $verbs = @($xml.SelectNodes('//d5:Verb',$ns))
@@ -20,4 +27,4 @@ if ($classes[0].Id -cne $clsid -or $classes[0].Path -cne 'WinPebble.PDFPageDupli
 }
 $header = Get-Content -LiteralPath (Join-Path (Split-Path -Parent $PSScriptRoot) 'shell\ShellIds.h') -Raw
 if (-not $header.Contains($clsid)) { throw 'Native command identity drifted from the manifest.' }
-Write-Host 'PASS: one PDF-only Explorer verb, dedicated CLSID and native DLL registration.'
+Write-Host 'PASS: Windows 10 22H2+ x64 target; one PDF-only Explorer verb, dedicated CLSID and native DLL registration.'

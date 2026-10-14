@@ -11,6 +11,10 @@ if ($xml.Package.Identity.Name -cne 'WinPebble.PDFPageDuplicator.PreviewDev' -or
   throw 'Only the dedicated development identity may be registered by this script.'
 }
 $layout = Split-Path -Parent $manifest
+$minimum = [version]$xml.Package.Dependencies.TargetDeviceFamily.MinVersion
+if ([Environment]::OSVersion.Version -lt $minimum -or -not [Environment]::Is64BitOperatingSystem) {
+  throw "This preview requires Windows 10 22H2 x64 (build 19045) or newer. Detected: $([Environment]::OSVersion.Version)."
+}
 foreach ($relative in @('WinPebble.PDFPageDuplicator.exe','WinPebble.PDFPageDuplicator.Shell.dll',
                         'Engine\WinPebble.PDFPageDuplicator.POC.exe')) {
   if (-not (Test-Path -LiteralPath (Join-Path $layout $relative) -PathType Leaf)) { throw "Missing layout file: $relative" }

@@ -69,8 +69,12 @@ intended environment. SAC being off does not by itself enable loose package
 registration. On a protected primary PC, use Store-signed Private audience
 delivery after the remaining draft gates and explicit publication approval.
 
-**Current manual status: NOT RUN.** No package/certificate/security setting or
-Explorer registration has been changed on the owner's machine by this work.
+**Current manual status:** the owner enabled Developer Mode and authorized
+development registration on Windows 11; package registration reported OK and
+the owner confirmed the requested menu/UI/export flow works. Uninstall remains
+untested. Windows 10 Pro 22H2 x64 testing is pending; see
+[Windows compatibility](WINDOWS_COMPATIBILITY.md). No certificate or security
+setting was changed by the agent.
 The previously uploaded Store draft package is unchanged; no submit/publish/merge.
 
 ## Sources
