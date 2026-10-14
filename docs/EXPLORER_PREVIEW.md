@@ -71,8 +71,9 @@ delivery after the remaining draft gates and explicit publication approval.
 
 **Current manual status:** the owner enabled Developer Mode and authorized
 development registration on Windows 11; package registration reported OK and
-the owner confirmed the requested menu/UI/export flow works. Uninstall remains
-untested. Windows 10 Pro 22H2 x64 testing is pending; see
+the owner confirmed the requested menu/UI/export flow works. Windows 11 uninstall
+remains untested. On Windows 10 Pro 22H2 x64 build 19045.7725, the owner confirmed
+all supplied tests passed after the PS5.1 helper fix, including removal; see
 [Windows compatibility](WINDOWS_COMPATIBILITY.md). No certificate or security
 setting was changed by the agent.
 The previously uploaded Store draft package is unchanged; no submit/publish/merge.

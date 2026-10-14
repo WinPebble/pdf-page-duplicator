@@ -12,11 +12,13 @@ Windows 10 support to an update.
 - The engine targets net10.0; WPF targets net10.0-windows. Those target framework
   names alone do not establish Windows 10 compatibility.
 - The owner confirmed development registration, Explorer activation and PDF
-  export on Windows 11. Windows 10 has not been tested.
+  export on Windows 11.
 - A portable executable running does not prove Store package eligibility or
   packaged Explorer integration.
 - The owner's second test machine is Windows 10 Pro 22H2 x64, OS build
-  19045.7725 (owner-provided About screenshot). Test results are still pending.
+  19045.7725 (owner-provided About screenshot). On 2026-10-14 the owner reported
+  all supplied tests passed after applying helper fix 25a37de. Screenshot (149)
+  shows successful development registration and removal. See the test record below.
 
 ## Required before public release
 
@@ -34,8 +36,28 @@ Windows 10 support to an update.
 5. Verify the Store-distributed build on both OS versions. Publish compatibility
    claims on the Store and website only after recording observed results.
 
-Status: **BLOCKING PUBLIC RELEASE; Windows 10 support not yet verified.**
+Status: **Development testing passed on the owner's Windows 10 and Windows 11
+machines; Store-distributed installation testing remains pending.**
 Do not treat a manifest change or CI build on Windows 11 as a Windows 10 test.
+
+## Owner-reported Windows 10 test record, 2026-10-14
+
+Environment: Windows 10 Pro 22H2 x64, build 19045.7725.
+Payload: exact f9b068f CI binaries, manifest baseline 0a3825d and PowerShell 5.1
+registration helper fix 25a37de. The initial helper failed before registration;
+the fixed helper was tested and supplied separately.
+
+The owner states all tests in the supplied guide passed: UI launch, all four
+export modes, progress and success confirmation, right-click activation with
+the selected PDF, Unicode/spaced filenames, removal and the existing PDF to
+Image check. This is owner-reported manual evidence, not agent-observed UI
+automation. Screenshot (149) independently shows helper registration and
+unregistration success messages; it does not independently demonstrate each
+PDF result. No personal screenshot/device IDs are committed to the repository.
+
+This closes the development Windows 10 testing gate for that payload and OS
+build. Start-menu activation, Store signing/delivery, Store install/update and
+the final release candidate on both systems still need release verification.
 
 ## Audit and test kit scope
 
