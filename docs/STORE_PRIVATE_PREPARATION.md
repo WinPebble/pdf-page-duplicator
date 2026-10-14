@@ -21,8 +21,11 @@ Product: WinPebble PDF Page Duplicator. Store ID: **9N28GX9HTL9Z**.
 - No tester group selected. Pricing and availability remains Incomplete until a group is selected. Create/view group links did not open a form in the connected browser; owner action requested without collecting tester emails in chat.
 - Properties saved and marked Complete: category Utilities + tools; privacy declaration covers user-selected documents. Partner Center explicitly includes documents in personal information examples.
 - Privacy policy text supplied directly using the portal's supported text option; source retained in [PRIVACY.md](PRIVACY.md).
-- Store listing languages are locked until a package is uploaded. Upload permission requested separately; no certification/publishing permission requested.
+- Owner explicitly authorized uploading the reviewed MSIX into Submission 1 draft. Package uploaded and saved; overview marks Packages Complete. Portal identifies version 1.0.0.0, x64, Windows.Desktop minimum 10.0.22000.0. No blocking acceptance error shown; warning states runFullTrust requires approval. This is package acceptance, not certification.
+- en-US listing unlocked. Description, short description, four features, developer and copyright text saved to draft. Listing remains Incomplete because a real desktop screenshot is required; none was fabricated or uploaded.
+- Additional Testing Information notes saved and verified by reopening; includes local processing, runFullTrust rationale and the four-mode test procedure. No credentials provided.
 - Selected manual publishing hold: Don't publish this submission until I select Publish now.
+- Added a 398-character runFullTrust justification within the portal's 500-character limit. Submission Options is marked Complete, with manual publishing hold retained. Explains the packaged WPF/engine process model, standard user execution and local PDF output. Approval remains pending certification; no capability approval is claimed.
 - Real installed MSIX testing, WPF screenshots and age ratings remain pending.
 - Local portal evidence is in ignored `artifacts/partner-center-review/`; it is not committed to the public repository.
 
@@ -111,6 +114,12 @@ The complete policy text saved in the Partner Center draft is retained in
 destination. This does not publish the app or its Store listing.
 
 ## Draft certification notes
+
+**Restricted capability justification saved in draft (398 characters):**
+
+Packaged desktop WPF app using a separate .NET/PDFsharp engine. runFullTrust launches the UI at standard user integrity and starts the packaged Engine executable. Users select a PDF; the engine reads it and stages, validates and saves a new PDF in the same folder without overwriting the original. Processing is local. No admin elevation, service, Explorer extension, analytics or document uploads.
+
+**Testing notes:**
 
 This is a desktop WPF utility for local PDF processing. `runFullTrust` is needed
 to launch the packaged desktop application, read a user-selected PDF and invoke
