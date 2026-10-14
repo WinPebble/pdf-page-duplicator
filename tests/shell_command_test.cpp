@@ -85,8 +85,18 @@ int wmain(int argc, wchar_t** argv)
             CoTaskMemFree(title);
             Require(titleCorrect, "Exact menu label");
             GUID canonical{};
-            Require(SUCCEEDED(command->GetCanonicalName(&canonical)) && IsEqualGUID(canonical, PageDuplicatorClsid), "Canonical CLSID");
+            CLSID manifestClsid{};
+            Require(SUCCEEDED(CLSIDFromString(L"{0CDFF472-2768-42AC-B500-F64804FC61C6}", &manifestClsid)), "Manifest CLSID literal");
+            Require(SUCCEEDED(command->GetCanonicalName(&canonical)) && IsEqualGUID(canonical, manifestClsid), "Canonical CLSID");
             auto one = Selection({pdf});
+            ComPtr<IShellItem> selectedItem;
+            Require(SUCCEEDED(one->GetItemAt(0, &selectedItem)), "Selected item");
+            PWSTR selectedPath = nullptr;
+            Require(SUCCEEDED(selectedItem->GetDisplayName(SIGDN_FILESYSPATH, &selectedPath)), "Selected filesystem path");
+            // Explorer canonicalizes e.g. short (8.3) Temp directory names.
+            // The child must receive exactly the path supplied by IShellItem.
+            const std::wstring expectedArgument(selectedPath);
+            CoTaskMemFree(selectedPath);
             auto wrong = Selection({text});
             auto multiple = Selection({pdf, text});
             auto folder = Selection({directory});
@@ -98,19 +108,21 @@ int wmain(int argc, wchar_t** argv)
             Require(FAILED(command->Invoke(multiple.Get(), nullptr)), "Multiple selection rejected");
             Require(SUCCEEDED(command->Invoke(one.Get(), nullptr)), "Launch UI recorder");
             bool matched = false;
+            std::wstring received;
             for (int attempt = 0; attempt < 100 && !matched; ++attempt)
             {
                 Sleep(50);
                 HANDLE file = CreateFileW(report.c_str(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE,
                     nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
                 if (file == INVALID_HANDLE_VALUE) continue;
-                std::wstring received(32768, L'\0');
+                received.assign(32768, L'\0');
                 DWORD read = 0;
                 if (ReadFile(file, received.data(), static_cast<DWORD>(received.size() * sizeof(wchar_t)), &read, nullptr))
-                { received.resize(read / sizeof(wchar_t)); matched = received == pdf; }
+                { received.resize(read / sizeof(wchar_t)); matched = received == expectedArgument; }
                 CloseHandle(file);
             }
-            Require(matched, "Child receives exactly one unchanged Unicode/spaced/metacharacter path");
+            if (!matched) std::wcerr << L"Expected: " << expectedArgument << L"\nReceived: " << received << L'\n';
+            Require(matched, "Child receives exactly one unchanged Unicode/spaced/metacharacter shell path");
             factory->LockServer(TRUE);
             command.Reset(); factory.Reset();
             Require(canUnload() == S_FALSE, "Server lock prevents unload");
