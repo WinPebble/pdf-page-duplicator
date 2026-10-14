@@ -22,6 +22,8 @@ foreach ($p in @($stage,$gui,$engine,$dest,(Join-Path $stage 'Engine'),(Join-Pat
   New-Item -ItemType Directory $p -Force | Out-Null
 }
 & (Join-Path $PSScriptRoot 'Prepare-BrandAssets.ps1')
+& (Join-Path $PSScriptRoot 'Validate-ExplorerRegistration.ps1') -ManifestPath $manifest
+& (Join-Path $PSScriptRoot 'Build-ExplorerCommand.ps1')
 & dotnet publish (Join-Path $root 'src\ui\PDFPageDuplicator.UI.csproj') -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o $gui
 if ($LASTEXITCODE -ne 0) { throw 'GUI publish failed' }
 & dotnet publish (Join-Path $root 'src\PdfPageDuplicator.Poc.csproj') -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o $engine
@@ -29,12 +31,13 @@ if ($LASTEXITCODE -ne 0) { throw 'Engine publish failed' }
 Copy-Item (Join-Path $gui '*') $stage -Force -Recurse
 Copy-Item (Join-Path $engine '*') (Join-Path $stage 'Engine') -Force -Recurse
 Copy-Item $manifest (Join-Path $stage 'AppxManifest.xml') -Force
+Copy-Item -LiteralPath (Join-Path $root 'artifacts\shell-build\Release\WinPebble.PDFPageDuplicator.Shell.dll') -Destination $stage -Force
 
 # Official brand assets are generated from a SHA-256-verified transparent mark.
 Copy-Item -Path (Join-Path $PSScriptRoot 'Assets\*') -Destination (Join-Path $stage 'Assets') -Recurse -Force
 if (-not (Test-Path -LiteralPath (Join-Path $stage 'Assets\Square150x150Logo.png'))) { throw 'Missing official WinPebble Store icon.' }
 
-foreach($f in @('WinPebble.PDFPageDuplicator.exe','Engine\WinPebble.PDFPageDuplicator.POC.exe','AppxManifest.xml')) {
+foreach($f in @('WinPebble.PDFPageDuplicator.exe','Engine\WinPebble.PDFPageDuplicator.POC.exe','WinPebble.PDFPageDuplicator.Shell.dll','AppxManifest.xml')) {
   if (-not (Test-Path (Join-Path $stage $f))) { throw "Missing package input: $f" }
 }
 if (Get-ChildItem $stage -File -Recurse | Where-Object { $_.Extension -in @('.cer','.pfx','.p12') }) {
@@ -47,7 +50,7 @@ $zip = [System.IO.Compression.ZipFile]::OpenRead($msix)
 try {
   $names=@($zip.Entries | ForEach-Object FullName)
   foreach($f in @('AppxManifest.xml','WinPebble.PDFPageDuplicator.exe',
-    'Engine/WinPebble.PDFPageDuplicator.POC.exe','Assets/Square44x44Logo.png',
+    'Engine/WinPebble.PDFPageDuplicator.POC.exe','WinPebble.PDFPageDuplicator.Shell.dll','Assets/Square44x44Logo.png',
     'Assets/Square150x150Logo.png','Assets/StoreLogo.png')) {
     if ($names -notcontains $f) { throw "MSIX missing: $f" }
   }

@@ -24,3 +24,9 @@ jobs:
           name: PDF-Page-Duplicator-UNSIGNED-MSIX-GATE-ONLY
           path: artifacts/msix-preview/out/
           if-no-files-found: error
+      - name: Upload loose development layout for approved Explorer testing
+        uses: actions/upload-artifact@v7
+        with:
+          name: PDF-Page-Duplicator-Explorer-Review-win-x64
+          path: artifacts/msix-preview/stage/
+          if-no-files-found: error

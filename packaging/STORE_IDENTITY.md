@@ -30,6 +30,12 @@ This literal value must not be 'corrected' to the public product display name.
 - [ ] Real Windows 11 test through Microsoft Store: WPF launch, 2-up/4-up output, install/uninstall.
 - [ ] Modern Explorer context menu integration (subsequent milestone).
 
+Native `Page Duplicator` implementation and full-MSIX registration are now in
+development; automated selection/argument tests are part of packaging. Real
+Explorer activation and install/uninstall review remain pending; see
+[Explorer preview](../docs/EXPLORER_PREVIEW.md). The portal's uploaded package
+has not been replaced by this development revision.
+
 **Security:** Do not sideload unsigned candidates or disable Smart App Control.
 The Store package must use this identity; never reuse the PDF to Image identity.
 Keep WPF PR #2 unmerged until the app has been evaluated on a Windows desktop.

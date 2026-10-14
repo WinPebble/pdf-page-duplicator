@@ -17,10 +17,12 @@ $unpacked = Join-Path $inspectionRoot ('inspection-' + [Guid]::NewGuid().ToStrin
 if ($LASTEXITCODE -ne 0) { throw 'MakeAppx could not unpack the Store candidate.' }
 $sourceManifest = Join-Path $PSScriptRoot 'AppxManifest.Store.xml'
 $packedManifest = Join-Path $unpacked 'AppxManifest.xml'
+& (Join-Path $PSScriptRoot 'Validate-ExplorerRegistration.ps1') -ManifestPath $packedManifest
 if ((Get-FileHash -LiteralPath $sourceManifest).Hash -cne (Get-FileHash -LiteralPath $packedManifest).Hash) {
   throw 'Packaged manifest differs from the validated Store manifest.'
 }
 foreach ($relative in @('WinPebble.PDFPageDuplicator.exe',
+    'WinPebble.PDFPageDuplicator.Shell.dll',
     'Engine\WinPebble.PDFPageDuplicator.POC.exe', 'Assets\Square44x44Logo.png',
     'Assets\Square150x150Logo.png', 'Assets\StoreLogo.png',
     'D3DCompiler_47_cor3.dll', 'PenImc_cor3.dll', 'PresentationNative_cor3.dll',

@@ -31,7 +31,7 @@ public partial class MainWindow : Window
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         var args = Environment.GetCommandLineArgs();
-        if (args.Length > 1 && File.Exists(args[1]))
+        if (args.Length > 1)
             LoadPdf(args[1]);
     }
 
@@ -60,6 +60,11 @@ public partial class MainWindow : Window
         OutputCanvas.Children.Clear();
         try
         {
+            path = Path.GetFullPath(path);
+            if (!Path.GetExtension(path).Equals(".pdf", StringComparison.OrdinalIgnoreCase))
+                throw new InvalidDataException("Choose a PDF document.");
+            if (!File.Exists(path))
+                throw new FileNotFoundException("The selected PDF no longer exists.", path);
             using var document = PdfReader.Open(path, PdfDocumentOpenMode.Import);
             if (document.PageCount == 0)
                 throw new InvalidDataException("The PDF has no pages.");
