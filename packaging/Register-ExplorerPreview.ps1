@@ -1,9 +1,14 @@
 # Explicit user-run development registration. No certificates or security changes.
 #requires -Version 5.1
 [CmdletBinding()]
-param([string]$ManifestPath = (Join-Path $PSScriptRoot 'Package\AppxManifest.xml'))
+param([string]$ManifestPath)
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+# Windows PowerShell 5.1 may not populate PSScriptRoot while evaluating a
+# parameter default. Resolve it in the script body, independent of caller cwd.
+if ([string]::IsNullOrWhiteSpace($ManifestPath)) {
+  $ManifestPath = Join-Path $PSScriptRoot 'Package\AppxManifest.xml'
+}
 $manifest = (Resolve-Path -LiteralPath $ManifestPath).Path
 [xml]$xml = Get-Content -LiteralPath $manifest -Raw
 if ($xml.Package.Identity.Name -cne 'WinPebble.PDFPageDuplicator.PreviewDev' -or

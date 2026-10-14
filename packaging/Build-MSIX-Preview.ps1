@@ -23,6 +23,7 @@ foreach ($p in @($stage,$gui,$engine,$dest,(Join-Path $stage 'Engine'),(Join-Pat
 }
 & (Join-Path $PSScriptRoot 'Prepare-BrandAssets.ps1')
 & (Join-Path $PSScriptRoot 'Validate-ExplorerRegistration.ps1') -ManifestPath $manifest
+& (Join-Path $root 'tests\Test-ExplorerPreviewHelper.ps1')
 & (Join-Path $PSScriptRoot 'Build-ExplorerCommand.ps1')
 & dotnet publish (Join-Path $root 'src\ui\PDFPageDuplicator.UI.csproj') -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o $gui
 if ($LASTEXITCODE -ne 0) { throw 'GUI publish failed' }
