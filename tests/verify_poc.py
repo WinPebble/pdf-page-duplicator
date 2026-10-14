@@ -90,7 +90,9 @@ def main():
         assert all(0 <= value <= 100 for value in percentages)
         assert events[-1]["type"] == "completed", "missing final saved-file confirmation"
         progress_output = nested/"Bản thử 1_2x_Portrait (3).pdf"
-        assert Path(events[-1]["outputPath"]) == progress_output
+        reported_output = Path(events[-1]["outputPath"])
+        # Windows/.NET may expand the runner's short (8.3) temp directory name.
+        assert reported_output.samefile(progress_output), f"Wrong output: {reported_output} vs {progress_output}"
         assert events[-1]["pageCount"] == 2 and events[-1]["copies"] == 2
         verify(unicode_src,progress_output,2,"portrait")
         cases+=1
