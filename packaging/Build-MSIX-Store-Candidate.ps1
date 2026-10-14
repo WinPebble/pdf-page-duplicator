@@ -66,7 +66,9 @@ try {
 $hash=(Get-FileHash $msix -Algorithm SHA256).Hash.ToLowerInvariant()
 "SHA256 ($([IO.Path]::GetFileName($msix))) = $hash" | Set-Content (Join-Path $out 'SHA256SUMS.txt') -Encoding ASCII
 Copy-Item $storeManifest (Join-Path $out 'AppxManifest.Store.xml') -Force
-$inspection = & (Join-Path $PSScriptRoot 'Test-StorePackage.ps1') -PackagePath $msix -MakeAppxPath $makeappx
+$sourceCommit = & git -C $root rev-parse HEAD
+if ($LASTEXITCODE -ne 0) { throw 'Cannot record build source commit.' }
+$inspection = & (Join-Path $PSScriptRoot 'Test-StorePackage.ps1') -PackagePath $msix -MakeAppxPath $makeappx -SourceCommit $sourceCommit.Trim()
 # MakeAppx writes native diagnostic output to the success stream; the final line is the path.
 $unpacked = [string]@($inspection)[-1]
 if ($env:GITHUB_OUTPUT) {

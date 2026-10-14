@@ -2,7 +2,8 @@
 [CmdletBinding()]
 param(
   [Parameter(Mandatory=$true)][string]$PackagePath,
-  [Parameter(Mandatory=$true)][string]$MakeAppxPath
+  [Parameter(Mandatory=$true)][string]$MakeAppxPath,
+  [string]$SourceCommit = 'UNKNOWN (standalone inspection)'
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -38,7 +39,8 @@ $commit = & git -C $root rev-parse HEAD
 if ($LASTEXITCODE -ne 0) { throw 'Cannot record source commit.' }
 [xml]$manifest = Get-Content -LiteralPath $packedManifest -Raw
 $report = [ordered]@{
-  sourceCommit = $commit.Trim()
+  sourceCommit = $SourceCommit
+  inspectionCommit = $commit.Trim()
   package = [IO.Path]::GetFileName($package)
   sha256 = (Get-FileHash -LiteralPath $package -Algorithm SHA256).Hash.ToLowerInvariant()
   identity = [string]$manifest.Package.Identity.Name
