@@ -35,26 +35,38 @@
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
       <Border Grid.Column="0" Background="White" CornerRadius="14" Padding="19" BorderBrush="#E0E6EF" BorderThickness="1">
-        <StackPanel>
-          <TextBlock Text="Output settings" FontSize="18" FontWeight="SemiBold" Foreground="#192C43"/>
-          <Button x:Name="BrowseButton" Content="Choose PDF…" Click="Browse_Click" Margin="0,17,0,9"/>
-          <TextBlock x:Name="FileLabel" Text="No PDF selected" TextWrapping="Wrap" FontSize="12" Foreground="#536478"/>
-          <Separator Margin="0,16,0,14"/>
-          <TextBlock Text="Paper orientation" FontWeight="SemiBold" Foreground="#192C43"/>
-          <RadioButton x:Name="PortraitOption" GroupName="Orientation" Content="Portrait (vertical)" IsChecked="True" Checked="SettingsChanged"/>
-          <RadioButton x:Name="LandscapeOption" GroupName="Orientation" Content="Landscape (horizontal)" Checked="SettingsChanged"/>
-          <Separator Margin="0,11,0,14"/>
-          <TextBlock Text="Copies per page" FontWeight="SemiBold" Foreground="#192C43"/>
-          <RadioButton x:Name="TwoOption" GroupName="Copies" Content="2 copies" IsChecked="True" Checked="SettingsChanged"/>
-          <RadioButton x:Name="FourOption" GroupName="Copies" Content="4 copies" Checked="SettingsChanged"/>
-          <Border Background="#EFF4FA" CornerRadius="8" Padding="12" Margin="0,15,0,15">
-            <TextBlock Text="Paper size stays the same. Copies are scaled without distortion. Each input page produces one output page."
-                       TextWrapping="Wrap" Foreground="#42556D" FontSize="12"/>
-          </Border>
-          <Button x:Name="GenerateButton" Content="Create PDF" Click="Generate_Click" IsEnabled="False"
-                  Background="#245DB3" Foreground="White" BorderThickness="0" Padding="18,12"/>
-          <TextBlock x:Name="StatusText" Margin="0,12,0,0" Foreground="#596778" TextWrapping="Wrap" FontSize="12"/>
-        </StackPanel>
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+          <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel>
+              <TextBlock Text="Output settings" FontSize="18" FontWeight="SemiBold" Foreground="#192C43"/>
+              <Button x:Name="BrowseButton" Content="Choose PDF…" Click="Browse_Click" Margin="0,17,0,9"/>
+              <TextBlock x:Name="FileLabel" Text="No PDF selected" TextWrapping="Wrap" FontSize="12" Foreground="#536478"/>
+              <Separator Margin="0,16,0,14"/>
+              <TextBlock Text="Paper orientation" FontWeight="SemiBold" Foreground="#192C43"/>
+              <RadioButton x:Name="PortraitOption" GroupName="Orientation" Content="Portrait (vertical)" IsChecked="True" Checked="SettingsChanged"/>
+              <RadioButton x:Name="LandscapeOption" GroupName="Orientation" Content="Landscape (horizontal)" Checked="SettingsChanged"/>
+              <Separator Margin="0,11,0,14"/>
+              <TextBlock Text="Copies per page" FontWeight="SemiBold" Foreground="#192C43"/>
+              <RadioButton x:Name="TwoOption" GroupName="Copies" Content="2 copies" IsChecked="True" Checked="SettingsChanged"/>
+              <RadioButton x:Name="FourOption" GroupName="Copies" Content="4 copies" Checked="SettingsChanged"/>
+              <Border Background="#EFF4FA" CornerRadius="8" Padding="12" Margin="0,15,0,15">
+                <TextBlock Text="Paper size stays the same. Copies are scaled without distortion. Each input page produces one output page."
+                           TextWrapping="Wrap" Foreground="#42556D" FontSize="12"/>
+              </Border>
+            </StackPanel>
+          </ScrollViewer>
+          <StackPanel Grid.Row="1" Margin="0,12,0,0">
+            <Button x:Name="GenerateButton" Content="Create PDF" Click="Generate_Click" IsEnabled="False"
+                    Background="#245DB3" Foreground="White" BorderThickness="0" Padding="18,12"/>
+            <ScrollViewer MaxHeight="72" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+              <TextBlock x:Name="StatusText" Margin="0,12,0,0" Foreground="#596778" TextWrapping="Wrap" FontSize="12"/>
+            </ScrollViewer>
+          </StackPanel>
+        </Grid>
       </Border>
       <Grid Grid.Column="2">
         <Grid.ColumnDefinitions>
