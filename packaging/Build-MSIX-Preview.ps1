@@ -14,7 +14,10 @@ $makeappx = Get-ChildItem $kits -Directory | Sort-Object Name -Descending |
   ForEach-Object { Join-Path $_.FullName 'x64\makeappx.exe' } |
   Where-Object { Test-Path $_ } | Select-Object -First 1
 if (-not $makeappx) { throw 'MakeAppx missing' }
-if (Test-Path $out) { Remove-Item $out -Recurse -Force }
+if ([IO.Path]::GetFullPath($out) -cne [IO.Path]::GetFullPath((Join-Path $root 'artifacts\msix-preview'))) {
+  throw 'Refusing to clean an unexpected build directory.'
+}
+if (Test-Path -LiteralPath $out) { Remove-Item -LiteralPath $out -Recurse -Force }
 foreach ($p in @($stage,$gui,$engine,$dest,(Join-Path $stage 'Engine'),(Join-Path $stage 'Assets'))) {
   New-Item -ItemType Directory $p -Force | Out-Null
 }

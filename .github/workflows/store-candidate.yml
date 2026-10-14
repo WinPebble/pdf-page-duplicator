@@ -18,12 +18,28 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.0.x'
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
       - name: Confirm exact Partner Center identity
         shell: pwsh
         run: .\\packaging\\Validate-StoreIdentity.ps1
       - name: Verify Partner Center identity and build unsigned Store candidate
+        id: package
         shell: pwsh
         run: .\packaging\Build-MSIX-Store-Candidate.ps1
+      - name: Install independent PDF validator (CI only)
+        run: python -m pip install --disable-pip-version-check pymupdf==1.26.7
+      - name: Verify actual engine unpacked from MSIX (not an installed-package test)
+        shell: pwsh
+        env:
+          UNPACKED_PACKAGE: ${{ steps.package.outputs.unpacked }}
+        run: |
+          $engine = Join-Path $env:UNPACKED_PACKAGE 'Engine\WinPebble.PDFPageDuplicator.POC.exe'
+          & $engine --self-test
+          if ($LASTEXITCODE -ne 0) { throw 'Packaged engine geometry test failed.' }
+          python tests/verify_poc.py --engine $engine
+          if ($LASTEXITCODE -ne 0) { throw 'Packaged engine PDF verification failed.' }
       - name: Upload structural check package - NOT for submission
         uses: actions/upload-artifact@v7
         with:

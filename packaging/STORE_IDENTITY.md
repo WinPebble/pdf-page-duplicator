@@ -22,6 +22,7 @@ This literal value must not be 'corrected' to the public product display name.
 - [x] Unsigned MSIX **structural** package checks.
 - [x] Official WinPebble-derived application icons.
 - [ ] Real WPF app screenshots on Windows.
+- [ ] Installed MSIX activation and WPF-to-engine execution verified in an approved test environment.
 - [ ] Final Store submission package built from approved assets.
 - [ ] Private audience selected with a designated **personal Microsoft account**.
 - [ ] Store certification and private publishing.
@@ -31,3 +32,8 @@ This literal value must not be 'corrected' to the public product display name.
 **Security:** Do not sideload unsigned candidates or disable Smart App Control.
 The Store package must use this identity; never reuse the PDF to Image identity.
 Keep WPF PR #2 unmerged until the app has been evaluated on a Windows desktop.
+
+Private audience is **not yet verified as saved**. The last handoff evidence
+showed Public audience; do not infer portal settings from the package identity.
+Do not submit for certification or publish (including privately) without owner
+authorization. See [preparation checklist and draft listing](../docs/STORE_PRIVATE_PREPARATION.md).

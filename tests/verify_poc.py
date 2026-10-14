@@ -3,6 +3,7 @@ PyMuPDF is only a test dependency; it is not bundled with WinPebble.
 """
 from __future__ import annotations
 import hashlib
+import argparse
 import json
 import subprocess
 import sys
@@ -17,7 +18,8 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def run(*args, ok=True):
-    proc = subprocess.run(["dotnet", str(BINARY), *map(str, args)], capture_output=True, text=True, timeout=100)
+    command = [str(BINARY)] if BINARY.suffix.lower() == ".exe" else ["dotnet", str(BINARY)]
+    proc = subprocess.run([*command, *map(str, args)], capture_output=True, text=True, encoding="utf-8", timeout=100)
     if (proc.returncode == 0) != ok:
         raise AssertionError(f"Unexpected result code {proc.returncode}; stdout={proc.stdout}; stderr={proc.stderr}")
     return proc
@@ -115,6 +117,11 @@ def main():
     print(json.dumps({"status":"PASS","compiled_engine":"PDFsharp","cases":cases},ensure_ascii=False))
 
 if __name__=="__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--engine", type=Path, help="Test this built DLL or unpacked MSIX EXE instead of the build-tree DLL")
+    options = parser.parse_args()
+    if options.engine:
+        BINARY = options.engine.resolve()
     try: main()
     except Exception as exc:
         print(f"FAIL: {type(exc).__name__}: {exc}",file=sys.stderr)

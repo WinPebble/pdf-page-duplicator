@@ -3,6 +3,9 @@ obj/
 dist/
 .vs/
 *.user
+artifacts/
+ci-review-pdfs/
+__pycache__/
 
 # Brand derivatives are generated reproducibly from approved source icon
 packaging/Assets/

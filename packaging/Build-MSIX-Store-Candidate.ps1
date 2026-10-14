@@ -15,6 +15,7 @@ $msix = Join-Path $out 'WinPebble-PDF-Page-Duplicator-0.3.0-Store-CANDIDATE-DO-N
 
 if (-not (Test-Path $storeManifest)) { throw 'Store manifest is missing.' }
 if (-not (Test-Path $buildPreview)) { throw 'MSIX preview builder is missing.' }
+& (Join-Path $PSScriptRoot 'Validate-StoreIdentity.ps1')
 $kits = Join-Path ([Environment]::GetFolderPath('ProgramFilesX86')) 'Windows Kits\10\bin'
 $makeappx = Get-ChildItem $kits -Directory | Sort-Object Name -Descending |
   ForEach-Object { Join-Path $_.FullName 'x64\makeappx.exe' } |
@@ -24,7 +25,10 @@ if (-not $makeappx) { throw 'Windows SDK MakeAppx tool is missing.' }
 # Development packaging gate produces the EXEs and validates their presence.
 & $buildPreview
 if ($LASTEXITCODE -ne 0) { throw 'Development packaging stage failed.' }
-if (Test-Path $storeRoot) { Remove-Item $storeRoot -Recurse -Force }
+if ([IO.Path]::GetFullPath($storeRoot) -cne [IO.Path]::GetFullPath((Join-Path $root 'artifacts\msix-store-candidate'))) {
+  throw 'Refusing to clean an unexpected Store build directory.'
+}
+if (Test-Path -LiteralPath $storeRoot) { Remove-Item -LiteralPath $storeRoot -Recurse -Force }
 New-Item -ItemType Directory $stage,$out -Force | Out-Null
 Copy-Item -Path (Join-Path $previewStage '*') -Destination $stage -Recurse -Force
 Copy-Item -LiteralPath $storeManifest -Destination (Join-Path $stage 'AppxManifest.xml') -Force
@@ -62,6 +66,12 @@ try {
 $hash=(Get-FileHash $msix -Algorithm SHA256).Hash.ToLowerInvariant()
 "SHA256 ($([IO.Path]::GetFileName($msix))) = $hash" | Set-Content (Join-Path $out 'SHA256SUMS.txt') -Encoding ASCII
 Copy-Item $storeManifest (Join-Path $out 'AppxManifest.Store.xml') -Force
+$inspection = & (Join-Path $PSScriptRoot 'Test-StorePackage.ps1') -PackagePath $msix -MakeAppxPath $makeappx
+# MakeAppx writes native diagnostic output to the success stream; the final line is the path.
+$unpacked = [string]@($inspection)[-1]
+if ($env:GITHUB_OUTPUT) {
+  "unpacked=$unpacked" | Add-Content -LiteralPath $env:GITHUB_OUTPUT -Encoding UTF8
+}
 Write-Host 'PASS: Store identity + unsigned MSIX package STRUCTURE.'
 Write-Host 'Icons now derive from approved WinPebble logo. Still DO NOT submit: human WPF review, screenshots and audience setup pending.'
 Write-Host "Product Store ID: 9N28GX9HTL9Z"
