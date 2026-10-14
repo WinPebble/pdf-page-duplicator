@@ -82,6 +82,18 @@ def main():
         assert second.exists()
         verify(unicode_src,second,2,"portrait")
         cases+=1
+        progress_run = run(unicode_src,"--copies",2,"--orientation","portrait","--progress","json")
+        events = [json.loads(line) for line in progress_run.stdout.splitlines()]
+        percentages = [event["percent"] for event in events if event["type"] == "progress"]
+        assert percentages[0] == 0 and percentages[-1] == 100
+        assert percentages == sorted(set(percentages)), "progress must increase monotonically"
+        assert all(0 <= value <= 100 for value in percentages)
+        assert events[-1]["type"] == "completed", "missing final saved-file confirmation"
+        progress_output = nested/"Bản thử 1_2x_Portrait (3).pdf"
+        assert Path(events[-1]["outputPath"]) == progress_output
+        assert events[-1]["pageCount"] == 2 and events[-1]["copies"] == 2
+        verify(unicode_src,progress_output,2,"portrait")
+        cases+=1
         digest=sha(first)
         run(unicode_src,"--copies",4,"--orientation","portrait","--output",first,ok=False)
         assert sha(first)==digest
@@ -89,6 +101,11 @@ def main():
         corrupt=root/"corrupt.pdf"
         corrupt.write_bytes(b"%PDF-1.5\nThis is not a valid PDF\n")
         run(corrupt,"--copies",2,"--orientation","portrait",ok=False)
+        assert not (root/"corrupt_2x_Portrait.pdf").exists()
+        cases+=1
+        failed_progress = run(corrupt,"--copies",2,"--orientation","portrait","--progress","json",ok=False)
+        failure_events = [json.loads(line) for line in failed_progress.stdout.splitlines()]
+        assert not any(event["type"] == "completed" or event.get("percent") == 100 for event in failure_events)
         assert not (root/"corrupt_2x_Portrait.pdf").exists()
         cases+=1
         textfile=root/"not_pdf.txt"

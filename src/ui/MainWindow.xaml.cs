@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Text;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -18,6 +20,7 @@ public partial class MainWindow : Window
     private double _sourceWidth;
     private double _sourceHeight;
     private int _pageCount;
+    private bool _isGenerating;
     private readonly Brush _sheetFill = Brushes.White;
     private static readonly Brush SheetStroke = new SolidColorBrush(Color.FromRgb(136, 149, 169));
     private static readonly Brush CopyFill = new SolidColorBrush(Color.FromRgb(222, 236, 253));
@@ -47,6 +50,11 @@ public partial class MainWindow : Window
     private void LoadPdf(string path)
     {
         _selectedPath = null;
+        StatusText.ToolTip = null;
+        FileLabel.ToolTip = path;
+        ProgressPanel.Visibility = Visibility.Collapsed;
+        ExportProgress.Value = 0;
+        ProgressLabel.Text = "0%";
         GenerateButton.IsEnabled = false;
         OriginalCanvas.Children.Clear();
         OutputCanvas.Children.Clear();
@@ -76,6 +84,7 @@ public partial class MainWindow : Window
             _pageCount = document.PageCount;
             _selectedPath = path;
             FileLabel.Text = Path.GetFileName(path);
+            FileLabel.ToolTip = path;
             StatusText.Foreground = Brushes.SlateGray;
             StatusText.Text = _pageCount > 1 ? $"Preview shows page 1 of {_pageCount}. Each page is processed separately." : "Ready to create PDF.";
             GenerateButton.IsEnabled = true;
@@ -154,7 +163,7 @@ public partial class MainWindow : Window
 
     private async void Generate_Click(object sender, RoutedEventArgs e)
     {
-        if (_selectedPath is null) return;
+        if (_selectedPath is null || _isGenerating) return;
         string engine = Path.Combine(AppContext.BaseDirectory, "Engine", "WinPebble.PDFPageDuplicator.POC.exe");
         if (!File.Exists(engine))
         {
@@ -163,9 +172,14 @@ public partial class MainWindow : Window
             return;
         }
 
+        _isGenerating = true;
         GenerateButton.IsEnabled = false;
-        BrowseButton.IsEnabled = false;
+        OptionsPanel.IsEnabled = false;
+        ExportProgress.Value = 0;
+        ProgressLabel.Text = "0%";
+        ProgressPanel.Visibility = Visibility.Visible;
         StatusText.Foreground = Brushes.SlateGray;
+        StatusText.ToolTip = null;
         StatusText.Text = "Creating PDF…";
         try
         {
@@ -175,6 +189,8 @@ public partial class MainWindow : Window
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
+                StandardOutputEncoding = Encoding.UTF8,
+                StandardErrorEncoding = Encoding.UTF8,
                 CreateNoWindow = true
             };
             info.ArgumentList.Add(_selectedPath);
@@ -182,25 +198,70 @@ public partial class MainWindow : Window
             info.ArgumentList.Add(FourOption.IsChecked == true ? "4" : "2");
             info.ArgumentList.Add("--orientation");
             info.ArgumentList.Add(PortraitOption.IsChecked == true ? "portrait" : "landscape");
+            info.ArgumentList.Add("--progress");
+            info.ArgumentList.Add("json");
             using var process = Process.Start(info) ?? throw new IOException("Could not start the PDF engine.");
-            var output = process.StandardOutput.ReadToEndAsync();
+            var output = ReadProgressAsync(process.StandardOutput);
             var error = process.StandardError.ReadToEndAsync();
             await process.WaitForExitAsync();
-            string stdout = await output, stderr = await error;
+            string? savedPath = await output;
+            string stderr = await error;
             if (process.ExitCode != 0)
                 throw new InvalidOperationException(string.IsNullOrWhiteSpace(stderr) ? "PDF conversion failed." : stderr.Trim());
+            if (string.IsNullOrWhiteSpace(savedPath) || !File.Exists(savedPath))
+                throw new IOException("The PDF engine did not confirm a saved output file.");
+            ExportProgress.Value = 100;
+            ProgressLabel.Text = "100%";
             StatusText.Foreground = new SolidColorBrush(Color.FromRgb(26, 125, 77));
-            StatusText.Text = stdout.Trim();
+            StatusText.Text = $"PDF created: {savedPath}";
+            StatusText.ToolTip = savedPath;
+            MessageBox.Show(this, $"Your PDF was created successfully.\n\n{savedPath}",
+                "PDF created", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
             StatusText.Foreground = Brushes.Firebrick;
             StatusText.Text = ex.Message;
+            StatusText.ToolTip = ex.Message;
+            MessageBox.Show(this, ex.Message, "Could not create PDF", MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
         {
+            _isGenerating = false;
             GenerateButton.IsEnabled = _selectedPath is not null;
-            BrowseButton.IsEnabled = true;
+            OptionsPanel.IsEnabled = true;
         }
+    }
+
+    private async Task<string?> ReadProgressAsync(StreamReader reader)
+    {
+        string? savedPath = null;
+        while (await reader.ReadLineAsync() is { } line)
+        {
+            // Drain stdout even if a library emits an unrelated diagnostic line.
+            try
+            {
+                using var message = JsonDocument.Parse(line);
+                var root = message.RootElement;
+                if (root.ValueKind != JsonValueKind.Object ||
+                    !root.TryGetProperty("type", out var type) || type.ValueKind != JsonValueKind.String)
+                    continue;
+                if (type.GetString() == "progress" && root.TryGetProperty("percent", out var percent) &&
+                    percent.ValueKind == JsonValueKind.Number && percent.TryGetInt32(out int value))
+                {
+                    // Reserve 100% until the engine exits successfully and output exists.
+                    int shown = Math.Clamp(value, 0, 99);
+                    ExportProgress.Value = Math.Max(ExportProgress.Value, shown);
+                    ProgressLabel.Text = $"{ExportProgress.Value:0}%";
+                    if (root.TryGetProperty("stage", out var stage) && stage.ValueKind == JsonValueKind.String)
+                        StatusText.Text = stage.GetString();
+                }
+                else if (type.GetString() == "completed" && root.TryGetProperty("outputPath", out var path) &&
+                    path.ValueKind == JsonValueKind.String)
+                    savedPath = path.GetString();
+            }
+            catch (JsonException) { /* non-protocol diagnostic; keep reading */ }
+        }
+        return savedPath;
     }
 }

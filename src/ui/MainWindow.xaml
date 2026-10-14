@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="PDF Page Duplicator — WinPebble"
         Icon="Resources/WinPebble-Pebble-Mark-512.png"
-        Width="1040" Height="680" MinWidth="940" MinHeight="630"
+        Width="1040" Height="720" MinWidth="940" MinHeight="680"
         WindowStartupLocation="CenterScreen" Background="#F5F7FB"
         FontFamily="Segoe UI" FontSize="14" Loaded="Window_Loaded">
   <Window.Resources>
@@ -13,7 +13,7 @@
       <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
     <Style TargetType="RadioButton">
-      <Setter Property="Margin" Value="0,8,0,8"/>
+      <Setter Property="Margin" Value="0,4,18,4"/>
       <Setter Property="Cursor" Value="Hand"/>
     </Style>
   </Window.Resources>
@@ -35,38 +35,27 @@
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
       <Border Grid.Column="0" Background="White" CornerRadius="14" Padding="19" BorderBrush="#E0E6EF" BorderThickness="1">
-        <Grid>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-          </Grid.RowDefinitions>
-          <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel>
+            <StackPanel x:Name="OptionsPanel">
               <TextBlock Text="Output settings" FontSize="18" FontWeight="SemiBold" Foreground="#192C43"/>
-              <Button x:Name="BrowseButton" Content="Choose PDF…" Click="Browse_Click" Margin="0,17,0,9"/>
-              <TextBlock x:Name="FileLabel" Text="No PDF selected" TextWrapping="Wrap" FontSize="12" Foreground="#536478"/>
-              <Separator Margin="0,16,0,14"/>
+              <Button x:Name="BrowseButton" Content="Choose PDF…" Click="Browse_Click" Margin="0,10,0,8"/>
+              <TextBlock x:Name="FileLabel" Text="No PDF selected" TextTrimming="CharacterEllipsis" FontSize="12" Foreground="#536478"/>
+              <Separator Margin="0,8,0,8"/>
               <TextBlock Text="Paper orientation" FontWeight="SemiBold" Foreground="#192C43"/>
-              <RadioButton x:Name="PortraitOption" GroupName="Orientation" Content="Portrait (vertical)" IsChecked="True" Checked="SettingsChanged"/>
-              <RadioButton x:Name="LandscapeOption" GroupName="Orientation" Content="Landscape (horizontal)" Checked="SettingsChanged"/>
-              <Separator Margin="0,11,0,14"/>
+              <StackPanel Orientation="Horizontal">
+                <RadioButton x:Name="PortraitOption" GroupName="Orientation" Content="Portrait" IsChecked="True" Checked="SettingsChanged"/>
+                <RadioButton x:Name="LandscapeOption" GroupName="Orientation" Content="Landscape" Checked="SettingsChanged"/>
+              </StackPanel>
+              <Separator Margin="0,8,0,8"/>
               <TextBlock Text="Copies per page" FontWeight="SemiBold" Foreground="#192C43"/>
-              <RadioButton x:Name="TwoOption" GroupName="Copies" Content="2 copies" IsChecked="True" Checked="SettingsChanged"/>
-              <RadioButton x:Name="FourOption" GroupName="Copies" Content="4 copies" Checked="SettingsChanged"/>
-              <Border Background="#EFF4FA" CornerRadius="8" Padding="12" Margin="0,15,0,15">
-                <TextBlock Text="Paper size stays the same. Copies are scaled without distortion. Each input page produces one output page."
+              <StackPanel Orientation="Horizontal">
+                <RadioButton x:Name="TwoOption" GroupName="Copies" Content="2 copies" IsChecked="True" Checked="SettingsChanged"/>
+                <RadioButton x:Name="FourOption" GroupName="Copies" Content="4 copies" Checked="SettingsChanged"/>
+              </StackPanel>
+              <Border Background="#EFF4FA" CornerRadius="8" Padding="10" Margin="0,12,0,0">
+                <TextBlock Text="Same paper size. Copies scale proportionally. One output page per input page."
                            TextWrapping="Wrap" Foreground="#42556D" FontSize="12"/>
               </Border>
             </StackPanel>
-          </ScrollViewer>
-          <StackPanel Grid.Row="1" Margin="0,12,0,0">
-            <Button x:Name="GenerateButton" Content="Create PDF" Click="Generate_Click" IsEnabled="False"
-                    Background="#245DB3" Foreground="White" BorderThickness="0" Padding="18,12"/>
-            <ScrollViewer MaxHeight="72" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-              <TextBlock x:Name="StatusText" Margin="0,12,0,0" Foreground="#596778" TextWrapping="Wrap" FontSize="12"/>
-            </ScrollViewer>
-          </StackPanel>
-        </Grid>
       </Border>
       <Grid Grid.Column="2">
         <Grid.ColumnDefinitions>
@@ -78,10 +67,12 @@
           <DockPanel LastChildFill="True">
             <StackPanel DockPanel.Dock="Top">
               <TextBlock Text="Original page" FontSize="17" FontWeight="SemiBold" Foreground="#192C43"/>
-              <TextBlock x:Name="OriginalSizeLabel" Text="Select a PDF to preview" FontSize="12" Foreground="#617087" Margin="0,6,0,12"/>
+              <TextBlock x:Name="OriginalSizeLabel" Text="Select a PDF to preview" TextWrapping="Wrap" FontSize="12" Foreground="#617087" Margin="0,6,0,12"/>
             </StackPanel>
             <Border Background="#EFF3F8" CornerRadius="10" ClipToBounds="True">
-              <Canvas x:Name="OriginalCanvas" Width="275" Height="350" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              <Viewbox Stretch="Uniform" StretchDirection="DownOnly" Margin="4">
+                <Canvas x:Name="OriginalCanvas" Width="275" Height="350"/>
+              </Viewbox>
             </Border>
           </DockPanel>
         </Border>
@@ -89,17 +80,45 @@
           <DockPanel LastChildFill="True">
             <StackPanel DockPanel.Dock="Top">
               <TextBlock Text="Output preview" FontSize="17" FontWeight="SemiBold" Foreground="#192C43"/>
-              <TextBlock x:Name="OutputSizeLabel" Text="2 copies • Portrait" FontSize="12" Foreground="#617087" Margin="0,6,0,12"/>
+              <TextBlock x:Name="OutputSizeLabel" Text="2 copies • Portrait" TextWrapping="Wrap" FontSize="12" Foreground="#617087" Margin="0,6,0,12"/>
             </StackPanel>
             <Border Background="#EFF3F8" CornerRadius="10" ClipToBounds="True">
-              <Canvas x:Name="OutputCanvas" Width="275" Height="350" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              <Viewbox Stretch="Uniform" StretchDirection="DownOnly" Margin="4">
+                <Canvas x:Name="OutputCanvas" Width="275" Height="350"/>
+              </Viewbox>
             </Border>
           </DockPanel>
         </Border>
       </Grid>
     </Grid>
-    <TextBlock Grid.Row="2"
+    <Grid Grid.Row="2">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid MinHeight="56">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="24"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel VerticalAlignment="Center">
+          <TextBlock x:Name="StatusText" Foreground="#596778" TextTrimming="CharacterEllipsis" FontSize="12"/>
+          <Grid x:Name="ProgressPanel" Visibility="Collapsed" Margin="0,8,0,0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="48"/>
+            </Grid.ColumnDefinitions>
+            <ProgressBar x:Name="ExportProgress" Minimum="0" Maximum="100" Height="8" VerticalAlignment="Center"/>
+            <TextBlock x:Name="ProgressLabel" Grid.Column="1" Text="0%" HorizontalAlignment="Right" FontSize="12"/>
+          </Grid>
+        </StackPanel>
+        <Button x:Name="GenerateButton" Grid.Column="2" Content="Create PDF" Click="Generate_Click" IsEnabled="False"
+                Background="#245DB3" Foreground="White" BorderThickness="0" Padding="24,12" MinWidth="150" VerticalAlignment="Center"/>
+      </Grid>
+      <TextBlock Grid.Row="1" Margin="0,12,0,0"
                Text="WinPebble — Local processing. No PDF content is shown in the preview."
                Foreground="#687789" FontSize="12"/>
+    </Grid>
   </Grid>
 </Window>

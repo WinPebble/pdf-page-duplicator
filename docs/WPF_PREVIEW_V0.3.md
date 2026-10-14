@@ -28,3 +28,30 @@ separate bottom row. Settings above scroll when space is limited. This keeps
 the export action accessible without changing the PDF engine or paper policy.
 Owner confirmation of the revised layout and WPF-driven export remains pending.
 Launching the portable folder does not establish installed-MSIX behavior.
+
+## Export controls and progress update
+
+At the owner's request, Create PDF now sits at the lower right of the whole
+window. Orientation and copy choices use compact horizontal rows; the settings
+panel has no scroll viewer. The window is 1040×720 DIPs with a 940×680 minimum.
+Preview canvases scale down uniformly when needed, preserving their proportions.
+Long filenames/status lines use ellipsis with the complete text in a tooltip.
+
+The engine's optional `--progress json` mode emits newline-delimited JSON:
+
+- `progress`: integer `percent` and human-readable `stage`.
+- `completed`: exact `outputPath`, `pageCount` and `copies`, after the final move.
+
+Percentages allocate 0–85% to processing pages, 90% to saving, 95% to validation,
+98% to finalizing and 100% to published output. They reflect page/phase milestones,
+not measured byte throughput or a timer. Small documents may finish immediately.
+The original CLI output is retained when the flag is omitted.
+
+WPF reads progress while the engine runs and keeps controls disabled to preserve
+the selected settings. It shows 100% and a success dialog with the output path
+only after the process exits successfully and that output exists. Failures show
+an error dialog instead. The PDF layout and atomic output algorithm are unchanged.
+
+The independent engine checks now include Unicode/collision handling in progress
+mode and ensure corrupt PDFs never report 100% or a completed output. Manual UI
+confirmation of the lower-right action, percentage bar and dialogs is pending.

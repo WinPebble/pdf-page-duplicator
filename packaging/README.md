@@ -14,7 +14,7 @@ values are locked in `STORE_IDENTITY.md` and `AppxManifest.Store.xml`.
 `Build-MSIX-Store-Candidate.ps1` checks identity before building and inspects the
 packed manifest and payload using `Test-StorePackage.ps1`. It emits
 `PACKAGE-INSPECTION.json` containing commit, identity and SHA-256 hashes. Store CI
-runs the existing 20 geometry / 13 PDF cases against the engine **unpacked from
+runs geometry and PDF output/progress cases against the engine **unpacked from
 that MSIX**, without rebuilding it. This is not an installed-package runtime test.
 
 An unsigned MSIX is accepted for Store submission; the Store handles signing.
