@@ -11,13 +11,29 @@ Product: WinPebble PDF Page Duplicator. Store ID: **9N28GX9HTL9Z**.
 - Shared layout calculator; WPF reads page 1 for diagrams, engine handles each page separately.
 - Engine resolved relative to `AppContext.BaseDirectory/Engine`; output written alongside input, not inside package. Installed MSIX execution remains unverified.
 - Exact Store identity and approved icon retained. No Explorer extension registration.
-- No GitHub releases at audit time. Partner Center not inspected in this session.
+- No GitHub releases at audit time.
+
+## Partner Center draft observed 2026-10-14
+
+- Submission 1 is In draft. No certification submission or publishing performed.
+- Private audience saved and verified by reopening Pricing and availability.
+- Base price USD 0; Make this product public on unchecked; organizational licensing disabled.
+- No tester group selected. Pricing and availability remains Incomplete until a group is selected. Create/view group links did not open a form in the connected browser; owner action requested without collecting tester emails in chat.
+- Properties saved and marked Complete: category Utilities + tools; privacy declaration covers user-selected documents. Partner Center explicitly includes documents in personal information examples.
+- Privacy policy text supplied directly using the portal's supported text option; source retained in [PRIVACY.md](PRIVACY.md).
+- Store listing languages are locked until a package is uploaded. Upload permission requested separately; no certification/publishing permission requested.
+- Selected manual publishing hold: Don't publish this submission until I select Publish now.
+- Real installed MSIX testing, WPF screenshots and age ratings remain pending.
+- Local portal evidence is in ignored `artifacts/partner-center-review/`; it is not committed to the public repository.
 
 ## Remaining gates, in order
 
-1. Run updated Store candidate CI: MakeAppx pack/unpack, exact packaged manifest,
+1. Updated Store candidate CI passed at feature commit `ff7b757`: MakeAppx pack/unpack, exact packaged manifest,
    payload inspection and existing tests against the unpacked engine. Inspect
    `PACKAGE-INSPECTION.json` and retain the package SHA-256 and workflow URL.
+   [Verified PR workflow](https://github.com/WinPebble/pdf-page-duplicator/actions/runs/38512364384)
+   tests merge checkout `0048788214f7d5a791bf2c36118198b006bfd142`;
+   artifact SHA-256: `77093650445808a88e817d4b39cf53a94d5b3ffa835cc403da8dde0eacd59c69`.
    This does not prove activation, child-process execution or filesystem behavior
    in an installed MSIX. No package installation is performed by these checks.
 2. Obtain real WPF screenshots from an approved Windows test environment, using
@@ -30,13 +46,13 @@ Product: WinPebble PDF Page Duplicator. Store ID: **9N28GX9HTL9Z**.
 3. Complete Partner Center draft: Properties, age ratings, Packages and en-US
    listing. Validate package acceptance in the portal separately from CI.
    Choose category and answer age-rating questions based on actual app behavior.
-   Review `runFullTrust` justification below. Publish a privacy/support URL if
-   requested by Partner Center; neither URL is assumed to exist.
+   Review `runFullTrust` justification below. Privacy text is already saved;
+   the portal supports it without requiring a separately hosted policy URL.
 4. Confirm **Private audience** saved with at least one known user group using
    personal Microsoft accounts. Keep **Make this product public on** unchecked.
    Review organizational licensing and retain no unintended organizational
    distribution. Keep free price. Do not request tester email addresses in chat.
-   Last handoff screenshot showed Public audience; this remains unverified.
+   Private audience is now saved, but tester group selection is still pending.
 5. Owner reviews the exact candidate hash, screenshots, all draft fields, audience
    and publication settings, then explicitly authorizes certification/private
    publishing. Do not submit, publish, merge PR #2 or create a public release now.
@@ -90,8 +106,9 @@ not upload your PDFs, collect personal information or usage analytics, show
 advertisements, or run a background service. Microsoft Store and Windows may
 process information under their own privacy policies.
 
-This text is ready for review, not an already-published privacy policy. Owner
-must provide an approved contact/support destination before it becomes a policy.
+The complete policy text saved in the Partner Center draft is retained in
+[PRIVACY.md](PRIVACY.md), with the existing GitHub issue tracker as the support
+destination. This does not publish the app or its Store listing.
 
 ## Draft certification notes
 
