@@ -30,6 +30,7 @@ if ([IO.Path]::GetFullPath($storeRoot) -cne [IO.Path]::GetFullPath((Join-Path $r
 }
 if (Test-Path -LiteralPath $storeRoot) { Remove-Item -LiteralPath $storeRoot -Recurse -Force }
 New-Item -ItemType Directory $stage,$out -Force | Out-Null
+Copy-Item -LiteralPath (Join-Path $previewRoot 'out\DEPENDENCY-INSPECTION.json') -Destination $out
 Copy-Item -Path (Join-Path $previewStage '*') -Destination $stage -Recurse -Force
 Copy-Item -LiteralPath $storeManifest -Destination (Join-Path $stage 'AppxManifest.xml') -Force
 

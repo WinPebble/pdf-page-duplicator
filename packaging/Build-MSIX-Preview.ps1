@@ -29,6 +29,7 @@ foreach ($p in @($stage,$gui,$engine,$dest,(Join-Path $stage 'Engine'),(Join-Pat
 if ($LASTEXITCODE -ne 0) { throw 'GUI publish failed' }
 & dotnet publish (Join-Path $root 'src\PdfPageDuplicator.Poc.csproj') -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o $engine
 if ($LASTEXITCODE -ne 0) { throw 'Engine publish failed' }
+& (Join-Path $PSScriptRoot 'Test-ReleaseDependencies.ps1') -ReportPath (Join-Path $dest 'DEPENDENCY-INSPECTION.json')
 Copy-Item (Join-Path $gui '*') $stage -Force -Recurse
 Copy-Item (Join-Path $engine '*') (Join-Path $stage 'Engine') -Force -Recurse
 Copy-Item $manifest (Join-Path $stage 'AppxManifest.xml') -Force
