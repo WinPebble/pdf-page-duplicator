@@ -5,6 +5,11 @@ replacing the draft package with SHA-256 d2f87f1cb020daf667378dcfb8a42ec1c93e29b
 uploading four prepared screenshots and saving the copy in STORE_SUBMISSION_READY.md.
 No certification, private/public publication, website publication or PR merge.
 
+The owner subsequently explicitly authorized upload of the replacement 1.0.1.0
+file with SHA-256 a8c6f335b5422b2d78e93c6f94435d10bf0f01aa45fb6f5e4a99b3550873febb.
+That upload and Save are now complete. The saved draft contains only this new
+package; old-package retention described below is historical to the first attempt.
+
 ## Completed and verified
 
 - Saved en-US description covering Windows 10 22H2/Windows 11 x64, Explorer
@@ -17,6 +22,12 @@ No certification, private/public publication, website publication or PR merge.
 - Read-only verification: Private audience selected, automatic public date off,
   free USD 0, organizational acquisition disabled. No tester group selected.
 - Read-only verification: Don't publish until I select Publish now is selected.
+- Uploaded the exact authorized 1.0.1.0 file. Overview reports Validated and
+  Packages Complete. Reopened Packages shows one package, version 1.0.1.0 x64,
+  minimum OS 10.0.19045.0, with the old 1.0.0.0 package gone.
+- Saved the approved 403-character runFullTrust justification in the formal
+  Restricted capabilities field, including the native Explorer command. The
+  runFullTrust approval warning remains pending certification.
 
 ## Package collision and safe restoration
 
@@ -31,7 +42,7 @@ Deleted only the rejected upload entry, then reverted the old package removal.
 The old validated 1.0.0.0 package (minimum OS 22000) remains in the saved draft.
 This is not a successful replacement of the package.
 
-## Prepared replacement requiring review
+## Uploaded replacement provenance
 
 Manifest source commit: 21a3e1b7a5dd04ccd09b4346715cc76ce8acedc6.
 Package version: 1.0.1.0. Name, Publisher, x64 architecture, Windows minimum
@@ -57,13 +68,25 @@ Four workflows passed for 21a3e1b, independently building from source:
 Those independently built artifacts are not asserted to have the same hash as
 the locally repacked review file. VERSION-REPACK-PROVENANCE.json records the
 separate manifest and compiled-binary sources. No package was installed for
-this version-only repack, and neither it nor its new hash has been uploaded.
+this version-only repack. The exact locally repacked file was subsequently
+owner-authorized, uploaded and saved to the draft.
+
+## Portal recovery during the approved 1.0.1.0 upload
+
+The original tab stayed at Analyzing package 99% and later showed
+Status: OK, FaultCode: undefined. No forced button activation, hidden API or
+validation bypass was used. A separate tab was recovered through the normal
+Home -> Apps and games -> product -> Packages UI. It showed the uploaded
+1.0.1.0, automatic removal of the superseded package and an enabled Save button.
+Saved there, observed the overview's Validated/Complete state and reopened
+Packages to verify persistence. Closed the stale original upload tab.
+
+Local proof is retained under artifacts/store-version-1.0.1.0/portal-proof;
+account screenshots are not committed to the public repository.
 
 ## Remaining
 
-Obtain approval for the exact 1.0.1.0 replacement hash, then upload/save it and
-recheck portal acceptance. Revisit the formal restricted-capability justification
-if the portal exposes a request field; the Explorer-aware testing notes are
-saved, while the separate 403-character justification remains prepared copy.
 Age ratings are Not started; tester group selection is pending. Final patched
 candidate manual checks and Store delivery tests on both systems remain pending.
+Obtain separate certification/private publishing authorization only after the
+remaining draft gates are complete. PR #2 and website remain unpublished.

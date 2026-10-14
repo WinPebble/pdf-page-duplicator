@@ -6,13 +6,20 @@ screenshots were saved; Store listings is now Complete. Updated certification
 testing notes were saved and verified by reopening. Private audience and manual
 publishing hold remain unchanged. No certification/publication or PR merge.
 
-The approved 1.0.0.0 MSIX upload was rejected for a duplicate package full name
-with different contents. The failed upload was deleted and pending removal of
-the old package was reverted. The old package remains in the draft. A version
-1.0.1.0 candidate is prepared locally; it has NOT been uploaded or authorized
-for upload yet. See [draft update record](STORE_DRAFT_UPDATE.md).
+The first 1.0.0.0 MSIX upload was rejected for a duplicate full name with
+different contents. The owner then explicitly authorized the exact version
+1.0.1.0 replacement. It is now uploaded, saved and Validated; Packages is
+Complete, and reopening Packages shows only 1.0.1.0 x64, minimum OS 19045.
+The 403-character Explorer-aware runFullTrust justification is also saved in
+Submission Options. See [draft update record](STORE_DRAFT_UPDATE.md).
 
-## Candidate and security
+## Current uploaded package and security payload provenance
+
+Uploaded version: 1.0.1.0. Exact uploaded MSIX SHA-256:
+`a8c6f335b5422b2d78e93c6f94435d10bf0f01aa45fb6f5e4a99b3550873febb`.
+Manifest source: 21a3e1b7a5dd04ccd09b4346715cc76ce8acedc6. Local version-only
+MakeAppx repack retains the eight EXE/DLL files from the security payload below.
+Partner Center acceptance is not certification or a Store installation test.
 
 Source candidate: fa0e05c7361fbadd97c98bb51c851875cd4e7f08.
 Actual PR workflow checkout: 7614acd08e61741394d5f563aae2d41938d1e8ce
@@ -143,9 +150,9 @@ portal section Complete without observing its result.
 
 ## Ordered next actions
 
-1. Review exact MSIX hash, dependency inspection, screenshots and this copy.
-2. Obtain owner authorization for replacing the old draft package and uploading
-   screenshots/saving updated text; retain Private audience/manual hold.
+1. Completed: review/approval of exact 1.0.1.0 MSIX, prepared screenshots/copy.
+2. Completed: uploaded and saved replacement, four screenshots and updated text;
+   Private audience/manual hold retained and verified.
 3. Select a known tester group with personal Microsoft accounts and finish age
    ratings. Recheck every portal section and runFullTrust review status.
 4. Obtain explicit certification authorization; submit only when complete.
