@@ -1,5 +1,19 @@
 # Submission 1 draft update record — 2026-10-14
 
+Current status 2026-10-15: owner separately confirmed Submit after the blocked
+attempt. Successfully submitted Submission 1; portal reports In certification
+and Pre-processing In progress. Public audience and automatic publication after
+certification apply. Not yet approved/live. Proof:
+artifacts/release-check-2026-10-15/submitted-in-certification.png (local only).
+PR #2 remains unmerged and website undeployed. Draft/block records below are
+historical and superseded by this successful submission.
+
+Latest update 2026-10-15: owner requested public release without additional
+tests. Public audience and automatic publication after certification were saved.
+Automatic action review blocked Submit, citing prior separate confirmation;
+awaiting explicit submission confirmation. Still in draft, not certified/live.
+The private-audience/manual-hold history below is superseded by this decision.
+
 Product 9N28GX9HTL9Z, Submission 1152921505702072587. Owner explicitly authorized
 replacing the draft package with SHA-256 d2f87f1cb020daf667378dcfb8a42ec1c93e29bd776aadd1398b3ee667d3f3a6,
 uploading four prepared screenshots and saving the copy in STORE_SUBMISSION_READY.md.

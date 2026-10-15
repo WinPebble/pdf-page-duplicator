@@ -1,5 +1,23 @@
 # Current Store submission copy and review gates
 
+Current status 2026-10-15: following the owner's separate explicit Submit
+confirmation, Submission 1 was successfully submitted. Partner Center reports
+In certification, Submission Complete, Pre-processing In progress, Certification
+and Publishing Not started. It confirms publication will begin as soon as
+certification passes. Version 1.0.1.0, exact approved MSIX hash unchanged;
+Public audience/free worldwide. Not yet certified or live. Earlier blocked
+attempt and private/manual-hold records below are historical. PR #2 unmerged;
+website not deployed.
+
+Latest owner direction 2026-10-15: release to all users without further testing.
+Saved Public audience (worldwide/free) and automatic publication after successful
+certification, replacing the earlier Private audience/manual hold. All draft
+sections remain Complete. The attempted Submit for certification was blocked
+by automatic action review because earlier instructions required separate
+submission confirmation. No submission occurred; explicit Submit confirmation
+requested. PR #2 remains unmerged; website is not published. Earlier private
+testing gates below are historical and no longer owner-required release gates.
+
 Latest check 2026-10-15: Age ratings Complete; patched Windows 11 UI/export and
 Unicode Explorer checks passed. Tester group created/selected and saved in
 Private audience; all portal sections Complete. Patched Windows 10 confirmation

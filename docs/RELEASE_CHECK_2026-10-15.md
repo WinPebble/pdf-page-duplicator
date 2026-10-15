@@ -1,5 +1,26 @@
 # Pre-certification check — 2026-10-15
 
+## Submission completed
+
+Owner subsequently explicitly confirmed the separate Submit action. Submitted
+version 1.0.1.0 in Submission 1152921505702072587 for product 9N28GX9HTL9Z.
+Observed In certification, Submission Complete, Pre-processing In progress,
+Certification/Publishing Not started, and the message that publication starts
+as soon as certification passes. Public audience and automatic publication are
+owner-authorized. No claim of certification success or public availability yet.
+Saved local proof submitted-in-certification.png. No PR merge or website deploy.
+The prior blocked attempt below is historical.
+
+## Latest owner decision
+
+Owner requested public release with no further testing; unresolved patched
+Windows 10 and Store-delivery checks remain unverified, but are no longer
+owner-required pre-release gates. Saved Public audience and Publish as soon as
+certification passes. Automatic action review blocked the attempted Submit for
+certification, citing the earlier separate-confirmation restriction; requested
+explicit Submit confirmation. Submission remains a draft. No PR merge or website
+deployment was performed. Prior private/manual-hold records below are historical.
+
 No certification submission, publication, website deployment or PR merge.
 
 ## Exact candidate and local checks
