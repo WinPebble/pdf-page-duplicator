@@ -86,7 +86,11 @@ account screenshots are not committed to the public repository.
 
 ## Remaining
 
-Age ratings are Not started; tester group selection is pending. Final patched
-candidate manual checks and Store delivery tests on both systems remain pending.
+Update 2026-10-15: Age ratings are now Complete after the owner confirmed the
+IARC terms/adulthood and the generated ratings were saved. Patched Windows 11
+UI exports and Unicode Explorer activation/export passed; see
+[pre-certification check](RELEASE_CHECK_2026-10-15.md).
+Tester account/group selection, patched Windows 10 manual checks and Store
+delivery tests on both systems remain pending.
 Obtain separate certification/private publishing authorization only after the
 remaining draft gates are complete. PR #2 and website remain unpublished.
