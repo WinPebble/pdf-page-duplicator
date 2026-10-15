@@ -23,6 +23,18 @@ Unicode/spaced/metacharacter argument launch. Both manifest registration gates,
 exact Store identity gate and PS5.1 helper regression checks passed. No new UI
 or PDF algorithm tests are needed for this label change.
 
+Local Store candidate prepared from the verified 1.0.1.0 staged payload, replacing
+only the compiled shell DLL and manifest. All seven retained EXE/DLL hashes
+match the previous patched payload. MakeAppx pack/unpack and Test-StorePackage
+passed, including exact identity, version 1.0.2.0, minimum Windows 19045,
+payload inspection and absence of a development signature. Not installed or
+submitted. This local incremental package is not claimed to be an independent
+CI rebuild. Binary provenance, inspection report and checksum are retained in
+artifacts/store-version-1.0.2.0/out.
+
+Candidate SHA-256:
+`dd1dc128fb349ad72846ab07916a04c37f39ca78d215a6bc1f8b142e403249ec`.
+
 Future certification-note change: replace the old Explorer menu label with
 PDF Duplicator. Prepare the next submission only after reviewing the new
 package; no upload, certification submission, publication or PR merge is
