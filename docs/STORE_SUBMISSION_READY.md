@@ -1,8 +1,9 @@
 # Current Store submission copy and review gates
 
 Latest check 2026-10-15: Age ratings Complete; patched Windows 11 UI/export and
-Unicode Explorer checks passed. Tester account/group and patched Windows 10
-confirmation remain pending. See [check record](RELEASE_CHECK_2026-10-15.md).
+Unicode Explorer checks passed. Tester group created/selected and saved in
+Private audience; all portal sections Complete. Patched Windows 10 confirmation
+remains pending. See [check record](RELEASE_CHECK_2026-10-15.md).
 
 Prepared 2026-10-14. Owner authorized the specified package, four screenshots
 and copy update to Submission 1. Listing copy/features/four captioned Desktop

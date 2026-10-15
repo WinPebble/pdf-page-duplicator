@@ -90,7 +90,8 @@ Update 2026-10-15: Age ratings are now Complete after the owner confirmed the
 IARC terms/adulthood and the generated ratings were saved. Patched Windows 11
 UI exports and Unicode Explorer activation/export passed; see
 [pre-certification check](RELEASE_CHECK_2026-10-15.md).
-Tester account/group selection, patched Windows 10 manual checks and Store
-delivery tests on both systems remain pending.
+Tester group was subsequently created with the owner-provided Store account
+and saved in Private audience; every portal section now reports Complete.
+Patched Windows 10 manual checks and Store delivery tests remain pending.
 Obtain separate certification/private publishing authorization only after the
 remaining draft gates are complete. PR #2 and website remain unpublished.

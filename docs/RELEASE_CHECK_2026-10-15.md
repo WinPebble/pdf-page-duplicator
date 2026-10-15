@@ -48,9 +48,13 @@ at action time. Saved and observed Age ratings Complete on the product overview.
 Current Rating ID is Pending, not a claim of certification approval.
 
 Availability remains Private audience, automatic public date unchecked, free
-USD 0, and organizational acquisition disabled. No selected tester group.
-The Customer groups page shows no existing group entries. Requested the owner's
-intended Store Microsoft account/group; selection is pending that response.
+USD 0, and organizational acquisition disabled. After the owner supplied the
+intended Store account, created `WinPebble Page Duplicator Private Testers`
+(group ID 1152921504607280733) with exactly one member and selected/saved it
+in Submission 1. Reopened Availability and verified the group remains checked,
+Private audience selected and automatic public date unchecked. Personal email
+is retained only in Partner Center/local proof, not in public repository docs.
+Overview now reports every section Complete and Submit for certification enabled.
 The prior manual Publish now hold remains unchanged.
 
 Local portal proof and Unicode UI screenshots are under
@@ -58,7 +62,7 @@ artifacts/release-check-2026-10-15 and are not committed to the public repositor
 
 ## Remaining gates
 
-1. Owner supplies intended Microsoft Store tester account(s); create/select group.
+1. Completed: owner supplied Store account; tester group created/selected/saved.
 2. Owner runs patched retest kit on Windows 10 22H2 x64 and confirms launch,
    right-click preselection, four exports, progress and success. Earlier f9b068f
    Windows 10 results remain valid only for that older binary.
