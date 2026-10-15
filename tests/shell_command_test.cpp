@@ -81,7 +81,7 @@ int wmain(int argc, wchar_t** argv)
             Require(canUnload() == S_FALSE, "Live objects prevent unload");
             PWSTR title = nullptr;
             Require(SUCCEEDED(command->GetTitle(nullptr, &title)), "Command title");
-            const bool titleCorrect = std::wstring(title) == L"Page Duplicator";
+            const bool titleCorrect = std::wstring(title) == L"PDF Duplicator";
             CoTaskMemFree(title);
             Require(titleCorrect, "Exact menu label");
             GUID canonical{};

@@ -33,5 +33,5 @@ Add-AppxPackage -Register $manifest
 $registered = Get-AppxPackage -Name 'WinPebble.PDFPageDuplicator.PreviewDev'
 if (-not $registered) { throw 'Development package was not registered.' }
 Write-Host "Registered for this user: $($registered.PackageFullName)"
-Write-Host 'Keep the Package folder in this location until unregistering. Right-click a single PDF and select Page Duplicator.'
+Write-Host 'Keep the Package folder in this location until unregistering. Right-click a single PDF and select PDF Duplicator.'
 Write-Host 'Explorer was not restarted. If the menu is stale, close app windows and arrange an approved Explorer restart or sign-out.'

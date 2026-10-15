@@ -86,7 +86,7 @@ namespace
         ExplorerCommand() { ++objects; }
         ~ExplorerCommand() { --objects; }
         IFACEMETHODIMP GetTitle(IShellItemArray*, PWSTR* title) override
-        { return title ? SHStrDupW(L"Page Duplicator", title) : E_POINTER; }
+        { return title ? SHStrDupW(L"PDF Duplicator", title) : E_POINTER; }
         IFACEMETHODIMP GetIcon(IShellItemArray*, PWSTR* icon) override
         {
             if (!icon) return E_POINTER;

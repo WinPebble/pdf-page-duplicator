@@ -11,7 +11,7 @@ $previewStage = Join-Path $previewRoot 'stage'
 $storeRoot = Join-Path $root 'artifacts\msix-store-candidate'
 $stage = Join-Path $storeRoot 'stage'
 $out = Join-Path $storeRoot 'out'
-$msix = Join-Path $out 'WinPebble-PDF-Page-Duplicator-1.0.1.0-Store-CANDIDATE-DO-NOT-SUBMIT.msix'
+$msix = Join-Path $out 'WinPebble-PDF-Page-Duplicator-1.0.2.0-Store-CANDIDATE-DO-NOT-SUBMIT.msix'
 
 if (-not (Test-Path $storeManifest)) { throw 'Store manifest is missing.' }
 if (-not (Test-Path $buildPreview)) { throw 'MSIX preview builder is missing.' }
@@ -44,7 +44,7 @@ $expectedPublisher='CN=6BD09250-A4F3-4F78-9DA7-2D9751735950'
 $expectedDisplay='Trung Hieu Nguyen - WinPebble'
 if (-not $id -or $id.Name -cne $expectedName -or
     $id.Publisher -cne $expectedPublisher -or $id.ProcessorArchitecture -cne 'x64' -or
-    $id.Version -cne '1.0.1.0' -or $prop.PublisherDisplayName -cne $expectedDisplay) {
+    $id.Version -cne '1.0.2.0' -or $prop.PublisherDisplayName -cne $expectedDisplay) {
   throw 'Store identity does not match recorded Partner Center values.'
 }
 if (Get-ChildItem $stage -File -Recurse | Where-Object { $_.Extension -in @('.cer','.pfx','.p12') }) {

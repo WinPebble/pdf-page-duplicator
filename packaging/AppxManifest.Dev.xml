@@ -9,7 +9,7 @@
  IgnorableNamespaces="uap uap10 rescap com desktop4 desktop5">
   <!-- Development-only identity: DO NOT submit as a Store product. -->
   <Identity Name="WinPebble.PDFPageDuplicator.PreviewDev"
-            Publisher="CN=WinPebble Development" Version="1.0.1.0" ProcessorArchitecture="x64" />
+            Publisher="CN=WinPebble Development" Version="1.0.2.0" ProcessorArchitecture="x64" />
   <Properties>
     <DisplayName>WinPebble PDF Page Duplicator Preview</DisplayName>
     <PublisherDisplayName>WinPebble Development</PublisherDisplayName>

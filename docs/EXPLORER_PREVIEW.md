@@ -1,5 +1,9 @@
 # Explorer Page Duplicator command
 
+Next version 1.0.2.0 changes the menu label to **PDF Duplicator**. The flow and
+selection rules below are unchanged. Version 1.0.1.0 submitted to Microsoft
+still displays Page Duplicator. See [update preparation](UPDATE_1.0.2.md).
+
 Requested flow: **right-click one PDF → Page Duplicator → the existing options
 window opens with that exact PDF already selected**. The command does not export
 automatically, show a file chooser, change the default PDF app or process a batch.

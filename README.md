@@ -15,7 +15,7 @@ Windows PDF page imposition: repeat each page 2 or 4 times on a single output pa
 - WPF options window with file selection, four modes and proportional diagrams using the same layout calculator as the CLI. Mixed-size documents preview page 1; output uses each page's own size.
 - Separate development and Store-identity full MSIX build lanes with the approved WinPebble icon.
 - Store candidate is an unsigned inspection artifact, not an approved installer. Real packaged WPF execution and owner UI review remain pending.
-- Native Explorer command **Page Duplicator** opens the options window with one selected PDF preloaded. Registration/click-through/uninstall review is pending; see [Explorer preview](docs/EXPLORER_PREVIEW.md). No Store certification or public release.
+- Native Explorer command **PDF Duplicator** (next version 1.0.2.0; previously Page Duplicator) opens the options window with one selected PDF preloaded. See [Explorer preview](docs/EXPLORER_PREVIEW.md) and [update preparation](docs/UPDATE_1.0.2.md). Store version 1.0.1.0 is in certification.
 
 ## Run in development
 
