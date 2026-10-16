@@ -1,5 +1,35 @@
 # Version 1.0.2.0 preparation
 
+## Store update draft — 2026-10-16
+
+Version 1.0.1.0 is now publicly available; verified the public Store download
+page and Partner Center In Microsoft Store. Owner requested continuation of
+the update. Created Submission 2, ID 1152921505702145212, uploaded the exact
+local 1.0.2.0 package/checksum below, saved it and observed Validated / Packages
+Updated. Microsoft automatically superseded the 1.0.1.0 package in this draft;
+the live version remains available until the update is published.
+
+Saved English listing description with the new menu label and release note:
+“Renamed the PDF context-menu command to PDF Duplicator.” Updated product-level
+Additional Testing Information for 1.0.2.0 / Public audience and verified it
+persists after reload. No app credentials. Public audience/free USD 0 and
+automatic publication after certification are retained. Four original UI
+screenshots remain applicable because only the Explorer menu label changed.
+
+All four workflows passed for 90ed3793692c117c55412970fcb7e0e4d7361645:
+- core: https://github.com/WinPebble/pdf-page-duplicator/actions/runs/38704461368
+- WPF: https://github.com/WinPebble/pdf-page-duplicator/actions/runs/38704461314
+- development/native: https://github.com/WinPebble/pdf-page-duplicator/actions/runs/38704461390
+- Store: https://github.com/WinPebble/pdf-page-duplicator/actions/runs/38704461306
+
+These source CI rebuilds are distinct from the exact uploaded local incremental
+package. Certification submission of 1.0.2.0 awaits separate owner confirmation;
+the earlier explicit Submit confirmation covered version 1.0.1.0. No PR merge
+or website deployment performed. Local portal proof retained in
+artifacts/store-version-1.0.2.0/portal-proof.
+
+## Original preparation record
+
 Requested 2026-10-15: change only the Explorer context-menu label from
 `Page Duplicator` to `PDF Duplicator`. The product/window name remains
 WinPebble PDF Page Duplicator. PDF processing, UI, CLSID, activation arguments,
