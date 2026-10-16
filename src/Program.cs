@@ -2,6 +2,8 @@ using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using WinPebble.PdfPageDuplicator;
+using System.Text;
+using System.Text.Json;
 
 // CLI proof-of-concept only; no WPF or Explorer extension in this milestone.
 static int Run(string[] args)
@@ -16,6 +18,7 @@ static int Run(string[] args)
         if (args.Length < 5 || args.Length % 2 != 1) return Usage();
         string input = Path.GetFullPath(args[0]);
         string? output = null;
+        bool reportProgress = false;
         int copies = 0;
         bool? portrait = null;
         for (int i = 1; i < args.Length; i += 2)
@@ -30,10 +33,19 @@ static int Run(string[] args)
                 case "--orientation" when value.Equals("landscape", StringComparison.OrdinalIgnoreCase):
                     portrait = false; break;
                 case "--output": output = Path.GetFullPath(value); break;
+                case "--progress" when value == "json": reportProgress = true; break;
                 default: return Usage();
             }
         }
         if (copies == 0 || portrait is null) return Usage();
+        if (reportProgress) Console.OutputEncoding = new UTF8Encoding(false);
+        int lastPercent = -1;
+        void Progress(int percent, string stage)
+        {
+            if (!reportProgress || percent == lastPercent) return;
+            lastPercent = percent;
+            Console.WriteLine(JsonSerializer.Serialize(new { type = "progress", percent, stage }));
+        }
         if (!File.Exists(input) || !Path.GetExtension(input).Equals(".pdf", StringComparison.OrdinalIgnoreCase))
             throw new InvalidOperationException("Input must be an existing PDF file.");
         string folder = Path.GetDirectoryName(input)!;
@@ -50,6 +62,7 @@ static int Run(string[] args)
             $".{Path.GetFileNameWithoutExtension(target)}.winpebble-{Guid.NewGuid():N}.tmp.pdf");
         try
         {
+            Progress(0, "Reading PDF");
             int pages;
             using (var source = PdfReader.Open(input, PdfDocumentOpenMode.Import))
             using (var form = XPdfForm.FromFile(input))
@@ -80,14 +93,18 @@ static int Run(string[] args)
                     using var gfx = XGraphics.FromPdfPage(dest);
                     foreach (var s in layout.Slots)
                         gfx.DrawImage(form,new XRect(s.X,s.Y,s.Width,s.Height));
+                    Progress((int)(85L * (index + 1) / pages), $"Processing page {index + 1} of {pages}");
                 }
+                Progress(90, "Saving PDF");
                 result.Info.Title = "PDF Page Duplicator - WinPebble Engineering POC";
                 result.Save(temp);
             }
+            Progress(95, "Validating PDF");
             using (var check = PdfReader.Open(temp, PdfDocumentOpenMode.Import))
                 if (check.PageCount != pages)
                     throw new IOException("Result page count failed validation.");
             string saved;
+            Progress(98, "Finalizing output");
             if (output is not null)
             {
                 File.Move(temp,target); // no overwrite
@@ -112,7 +129,11 @@ static int Run(string[] args)
                     }
                 }
             }
-            Console.WriteLine($"SUCCESS: {pages} PDF page(s), {copies} copies each. {saved}");
+            Progress(100, "PDF created");
+            if (reportProgress)
+                Console.WriteLine(JsonSerializer.Serialize(new { type = "completed", outputPath = saved, pageCount = pages, copies }));
+            else
+                Console.WriteLine($"SUCCESS: {pages} PDF page(s), {copies} copies each. {saved}");
             return 0;
         }
         finally
@@ -129,7 +150,7 @@ static int Run(string[] args)
 }
 static int Usage()
 {
-    Console.Error.WriteLine("Usage: WinPebble.PDFPageDuplicator.POC.exe <input.pdf> --copies 2|4 --orientation portrait|landscape [--output <path.pdf>]");
+    Console.Error.WriteLine("Usage: WinPebble.PDFPageDuplicator.POC.exe <input.pdf> --copies 2|4 --orientation portrait|landscape [--output <path.pdf>] [--progress json]");
     Console.Error.WriteLine("       WinPebble.PDFPageDuplicator.POC.exe --self-test");
     return 2;
 }

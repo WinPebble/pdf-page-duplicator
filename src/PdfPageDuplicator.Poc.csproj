@@ -9,7 +9,13 @@
     <FileVersion>0.2.0.0</FileVersion>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
+  <!-- The CLI project must not compile WPF source or generated obj files. -->
+  <ItemGroup>
+    <Compile Remove="ui/**/*.cs" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="PDFsharp" Version="6.2.4" />
+    <!-- Patch the transitive dependency without changing the approved PDFsharp. -->
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="8.0.2" />
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@ PyMuPDF is only a test dependency; it is not bundled with WinPebble.
 """
 from __future__ import annotations
 import hashlib
+import argparse
 import json
 import subprocess
 import sys
@@ -17,7 +18,8 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def run(*args, ok=True):
-    proc = subprocess.run(["dotnet", str(BINARY), *map(str, args)], capture_output=True, text=True, timeout=100)
+    command = [str(BINARY)] if BINARY.suffix.lower() == ".exe" else ["dotnet", str(BINARY)]
+    proc = subprocess.run([*command, *map(str, args)], capture_output=True, text=True, encoding="utf-8", timeout=100)
     if (proc.returncode == 0) != ok:
         raise AssertionError(f"Unexpected result code {proc.returncode}; stdout={proc.stdout}; stderr={proc.stderr}")
     return proc
@@ -80,6 +82,20 @@ def main():
         assert second.exists()
         verify(unicode_src,second,2,"portrait")
         cases+=1
+        progress_run = run(unicode_src,"--copies",2,"--orientation","portrait","--progress","json")
+        events = [json.loads(line) for line in progress_run.stdout.splitlines()]
+        percentages = [event["percent"] for event in events if event["type"] == "progress"]
+        assert percentages[0] == 0 and percentages[-1] == 100
+        assert percentages == sorted(set(percentages)), "progress must increase monotonically"
+        assert all(0 <= value <= 100 for value in percentages)
+        assert events[-1]["type"] == "completed", "missing final saved-file confirmation"
+        progress_output = nested/"Bản thử 1_2x_Portrait (3).pdf"
+        reported_output = Path(events[-1]["outputPath"])
+        # Windows/.NET may expand the runner's short (8.3) temp directory name.
+        assert reported_output.samefile(progress_output), f"Wrong output: {reported_output} vs {progress_output}"
+        assert events[-1]["pageCount"] == 2 and events[-1]["copies"] == 2
+        verify(unicode_src,progress_output,2,"portrait")
+        cases+=1
         digest=sha(first)
         run(unicode_src,"--copies",4,"--orientation","portrait","--output",first,ok=False)
         assert sha(first)==digest
@@ -87,6 +103,11 @@ def main():
         corrupt=root/"corrupt.pdf"
         corrupt.write_bytes(b"%PDF-1.5\nThis is not a valid PDF\n")
         run(corrupt,"--copies",2,"--orientation","portrait",ok=False)
+        assert not (root/"corrupt_2x_Portrait.pdf").exists()
+        cases+=1
+        failed_progress = run(corrupt,"--copies",2,"--orientation","portrait","--progress","json",ok=False)
+        failure_events = [json.loads(line) for line in failed_progress.stdout.splitlines()]
+        assert not any(event["type"] == "completed" or event.get("percent") == 100 for event in failure_events)
         assert not (root/"corrupt_2x_Portrait.pdf").exists()
         cases+=1
         textfile=root/"not_pdf.txt"
@@ -115,6 +136,11 @@ def main():
     print(json.dumps({"status":"PASS","compiled_engine":"PDFsharp","cases":cases},ensure_ascii=False))
 
 if __name__=="__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--engine", type=Path, help="Test this built DLL or unpacked MSIX EXE instead of the build-tree DLL")
+    options = parser.parse_args()
+    if options.engine:
+        BINARY = options.engine.resolve()
     try: main()
     except Exception as exc:
         print(f"FAIL: {type(exc).__name__}: {exc}",file=sys.stderr)
