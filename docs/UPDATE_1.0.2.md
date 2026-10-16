@@ -1,5 +1,13 @@
 # Version 1.0.2.0 preparation
 
+Current status 2026-10-16: owner explicitly confirmed certification submission
+and automatic public publication. Submitted Submission 2 successfully; portal
+reports Update in certification, Submission Complete, Pre-processing In progress,
+Certification/Publishing Not started and publication as soon as certification
+passes. Version 1.0.1.0 remains live. No claim that 1.0.2.0 is approved/live yet.
+Proof: artifacts/store-version-1.0.2.0/portal-proof/submission-2-in-certification.png.
+Prior draft/preparation status below is historical. PR #2 remains unmerged.
+
 ## Store update draft — 2026-10-16
 
 Version 1.0.1.0 is now publicly available; verified the public Store download
